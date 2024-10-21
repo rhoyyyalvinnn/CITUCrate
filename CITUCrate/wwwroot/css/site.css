@@ -1,15 +1,55 @@
-html {
-  font-size: 14px;
+
+/* Basic styling for the navbar */
+.navbar {
+    font-size: 48px;
+    background-color: #401D1D;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+.navbar a {
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    /* Change color on hover */
+    .navbar a:hover {
+        color: #FFFFFF !important;
+    }
+
+/* Left side of the navbar */
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-left img {
+    height: 70px;
+    width: auto;
+}
+
+/* Logo styling */
+.navbar-logo {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+}
+
+/* Right side of the navbar */
+.navbar-right {
+    display: flex;
+}
+
+
+
+.navbar-left a, .navbar-right a {
+    font-family: "Jersey 10", sans-serif;
+    font-style: normal;
+    text-decoration: none;
+    color: #D2AF3D !important; /* Dark gray color for text */
 }
 
 html {
@@ -18,5 +58,6 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-color: #BAB8B8;
 }
