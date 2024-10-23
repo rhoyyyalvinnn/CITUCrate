@@ -1,0 +1,72 @@
+﻿.sidebar {
+    width: 200px;
+    background-color: #D2AF3D;
+    position: fixed;
+    top: 100px; /* Adjust based on your navbar's height */
+    left: 0;
+    height: auto;
+/*    padding: 20px;*/
+    margin: 30px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+    .sidebar ul {
+        list-style: none;
+        padding: 0;
+    }
+
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+
+    .sidebar a {
+        font-family: "Jersey 10", sans-serif;
+        font-size: 24px;
+        text-decoration: none;
+        color: #401D1D;
+        background-color: #D2AF3D;
+        width: 200px;
+        display: block;
+        border-radius: 5px;
+    }
+
+
+        .sidebar a:active,
+        .sidebar a:focus,
+        .sidebar a:hover {
+            background-color: #A78930; /* White background */
+            color: #401D1D; /* Keep the text color the same or change as needed */
+        }
+
+        .sidebar a.active {
+            background-color: #A78930; /* White background for active link */
+            color: #401D1D;
+            border-radius: 5px; /* Optional: for rounded corners on the active item */
+        }
+
+
+.main-content {
+    margin: 30px;
+    font-family: "Jersey 10", sans-serif;
+    margin-left: 220px;
+    padding: 20px;
+    background-color: #F0EAD6;
+    border-radius: 10px;
+    min-height: 500px; /* Optional: adjust as needed */
+}
+
+.main-content h2{
+    text-align: center;
+    font-size: 36px;
+}
+
+.main-content p {
+    margin: 25px;
+    text-align: justify;
+    font-size: 24px;
+}
+
+.content-section {
+    display: none;
+}

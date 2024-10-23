@@ -1,0 +1,98 @@
+﻿@page
+@model CITUCrate.Pages.aboutusModel
+@{
+    ViewData["Title"] = "About Us";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CIT-U Crate</title>
+    <link rel="stylesheet" href="~/css/aboutus.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar">
+        <ul>
+            <li><a href="#" onclick="showSection('about')">CIT-U Crate</a></li>
+            <li><a href="#" onclick="showSection('mission')">Mission</a></li>
+            <li><a href="#" onclick="showSection('vision')">Vision</a></li>
+            <li><a href="#" onclick="showSection('team')">Team</a></li>
+            <li><a href="#" onclick="showSection('values')">Values</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div id="about" class="content-section">
+            <h2>About CIT-U Crate</h2>
+            Welcome to CIT-U Crate: Your On-Campus Delivery Solution!
+            Imagine the convenience of having everything you need—right
+            at your fingertips—without having to leave your classroom or
+            dorm. Whether you're in need of school supplies, books, or
+            even campus essentials, CIT-U Crate has you covered.
+            <br />
+            <br />
+            Our delivery service brings the best of CIT University right
+            to your doorstep. Simply browse, order, and let our campus
+            facilities deliver everything you need quickly and hassle-free.
+            With CIT-U Crate, you can stay focused on your studies and
+            activities while we handle the rest.
+            <br />
+            <br />
+            Fast, Reliable, Convenient—that's CIT-U Crate, making campus
+            life easier one delivery at a time.
+        </div>
+        <div id="mission" class="content-section" style="display: none;">
+            <h2>Mission</h2>
+            <p>At CIT-U Crate, our mission is to enhance the campus experience by providing a reliable and convenient on-campus delivery service.</p>
+        </div>
+        <div id="vision" class="content-section" style="display: none;">
+            <h2>Vision</h2>
+            <p>Our vision is to become the leading delivery service within our campus community, recognized for our commitment to excellence, innovation, and sustainability.</p>
+        </div>
+        <div id="team" class="content-section" style="display: none;">
+            <h2>Team</h2>
+            <p>Meet the dedicated team behind CIT-U Crate. We strive to provide the best service for our campus community.</p>
+        </div>
+        <div id="values" class="content-section" style="display: none;">
+            <h2>Values</h2>
+            <p>We value excellence, commitment, and sustainability in all aspects of our services.</p>
+        </div>
+    </div>
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.style.display = 'none');
+
+            // Show the selected section
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = 'block';
+            }
+
+            // Update the active link
+            document.querySelectorAll('.sidebar a').forEach(link => link.classList.remove('active'));
+            document.querySelector(`.sidebar a[onclick="showSection('${sectionId}')"]`).classList.add('active');
+        }
+
+        // Set the default selection to "CIT-U Crate" on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            showSection('about');
+        });
+
+        // JavaScript to add 'active' class to the clicked link
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', function () {
+                document.querySelectorAll('.sidebar a').forEach(item => item.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+
+    </script>
+
+</body>
+</html>

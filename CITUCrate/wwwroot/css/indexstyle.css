@@ -3,14 +3,17 @@
 }
 .main-content{
     margin: 50px;
+    gap: 50px;
     display: flex;
 }
-.main-content img{
+.main-content img {
+    left: 20px;
     width: 500px;
     height: auto;
 }
 .main-content p {
     width: 700px;
+    right: 500px;
     font-family: "Jersey 10", sans-serif;
     font-style: normal;
     font-size: 30px;
