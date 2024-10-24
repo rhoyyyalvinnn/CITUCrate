@@ -1,0 +1,120 @@
+﻿/* Main container for the form */
+.whole-body {
+    margin-top:15px;
+    font-family: 'Jersey 10', sans-serif;
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Form container styling */
+.forms-rect {
+    width: 600px;
+    background-color: #401D1D;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    position: relative;
+}
+
+    /* Styling for the logo inside the form */
+    .forms-rect .logo {
+        margin-top: -20px;
+        margin-bottom: -35px;
+    }
+
+        .forms-rect .logo img {
+            width: 150px;
+            height: auto;
+            margin-bottom: -10px;
+        }
+
+    .forms-rect h2 {
+        color: #ffcc33;
+        font-size: 48px;
+        margin-bottom: 20px;
+    }
+
+
+/* Form styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+
+        .form-group input:focus {
+            outline: none;
+            box-shadow: 0 0 5px #ffcc33;
+        }
+
+/* Submit button styling */
+.btn-primary {
+    background-color: #D2AF3D;
+    color: #3b1f1d;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 10px;
+}
+
+    .btn-primary:hover {
+        background-color: #e6b800;
+    }
+
+
+/*for placeholder images css*/
+#username-input {
+    background-image: url('/images/nameplaceholder.png'); /* Update the path if needed */
+    background-position: 10px center;
+    background-repeat: no-repeat;
+    padding-left: 40px; /* Make space for the icon */
+    background-size: 20px 20px; /* Adjust the size of the icon if necessary */
+}
+
+#email-input {
+    background-image: url('/images/emailplaceholder.png'); /* Update the path if needed */
+    background-position: 5px center;
+    background-repeat: no-repeat;
+    padding-left: 40px; /* Make space for the icon */
+    background-size: 30px 20px; /* Adjust the size of the icon if necessary */
+}
+
+#password-input {
+    background-image: url('/images/passwordplaceholder.png'); /* Update the path if needed */
+    background-position: 10px center;
+    background-repeat: no-repeat;
+    padding-left: 40px; /* Make space for the icon */
+    background-size: 20px 20px; /* Adjust the size of the icon if necessary */
+}
+/*Done placeholder*/
+.loginRed{
+    color: #FFF;
+}
+
+/*css for the logo at the left side*/
+.maroon{
+    text-align: center;
+}
+
+.maroon img{ 
+    width: 500px;
+}
+
+.maroon h2{
+    margin-top: -50px;
+    color: #401D1D;
+    font-size: 72px;
+}
