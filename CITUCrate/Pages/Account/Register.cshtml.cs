@@ -1,11 +1,21 @@
+using CITUCrate.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace CITUCrate.Pages.Account
 {
     public class RegisterModel : PageModel
     {
+        private readonly UserContext _context;
+
+        public RegisterModel(UserContext context)
+        {
+            _context = context;
+        }
+
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -30,22 +40,42 @@ namespace CITUCrate.Pages.Account
             [Display(Name = "Confirm Password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            public int isBuyer { get; set; }
         }
 
         public void OnGet()
         {
         }
 
-        public IActionResult OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            // TODO: Add your registration logic here (e.g., saving the user to the database)
+            // Check for reserved usernames
+            string[] reservedUsernames = { "Admin", "adminseller" }; // Add other reserved usernames here
+            if (reservedUsernames.Contains(Input.Username, StringComparer.OrdinalIgnoreCase))
+            {
+                ModelState.AddModelError("Input.Username", "This username is reserved and cannot be used.");
+                return Page();
+            }
 
-            // Redirect to a different page after successful registration, e.g., login page
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(Input.Password);
+            var user = new User
+            {
+                Username = Input.Username,
+                Email = Input.Email,
+                Password = hashedPassword,
+                isBuyer = 1
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            // Redirect to a different page after successful registration
             return RedirectToPage("/Account/Login");
         }
     }
