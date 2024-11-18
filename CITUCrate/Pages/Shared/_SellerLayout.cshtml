@@ -14,16 +14,16 @@
 <body>
     <nav class="navbar">
         <div class="navbar-left">
-            <a href="/">
+            <a href="/Seller/SellerHomepage">
                 <img src="~/images/citucrate_logo.png" alt="Logo" class="navbar-logo">
             </a>
-            <a asp-page="/AboutUs" class="nav-link">About Us</a>
-            <a href="#partners">Partners</a>
-            <a href="#contact">Contact Us</a>
+                <a asp-page="/SellerHomepage">                  Dashboard</a>
+                <a asp-page="/Seller/ProductManagement">        Manage Products</a>
+                <a asp-page="/Seller/OrderManagement">          View Orders</a>
         </div>
         <div class="navbar-right">
-            <a asp-page="/Account/Register">Register</a>
-            <a asp-page="/Account/Login">Login</a>
+                <a asp-page="/Account" asp-page-handler="Logout">Logout</a>
+                <a asp-page="/Seller/Profile">Profile</a>
         </div>
     </nav>
     <div class="container">

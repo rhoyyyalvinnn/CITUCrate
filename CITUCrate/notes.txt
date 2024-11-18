@@ -1,0 +1,15 @@
+// implement seller interface
+	* Add another column to the database called isSeller and give the admin or the seller account the value of 1 (boolean placeholder)
+	* else the value should be 0 
+
+
+
+Done: 
+	* Added the isBuyer Column that will take the value of 1 upon registration
+
+
+Admin-account: 
+	Username: AdminSeller
+	Email: Adminseller@admin.com
+	Password: adminseller123
+	isBuyer: 0
