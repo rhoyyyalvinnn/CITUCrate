@@ -1,5 +1,8 @@
 using CITUCrate.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+
 
 namespace CITUCrate
 {
@@ -16,6 +19,15 @@ namespace CITUCrate
                 options.UseSqlServer("Server=(localdb)\\dbCITUCrate;Database=UserDB;Trusted_Connection=True;TrustServerCertificate=True;");
             });
 
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout as needed
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            
+
             var app = builder.Build();
 
             // Seed admin user if not exists
@@ -30,6 +42,8 @@ namespace CITUCrate
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseRouting();
 

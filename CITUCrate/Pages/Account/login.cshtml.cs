@@ -27,11 +27,11 @@ namespace CITUCrate.Pages.Account
         {
             [Required]
             [EmailAddress]
-            public string Email { get; set; }
+            public required string Email { get; set; }
 
             [Required]
             [DataType(DataType.Password)]
-            public string Password { get; set; }
+            public required string Password { get; set; }
         }
 
         public void OnGet()
@@ -51,9 +51,13 @@ namespace CITUCrate.Pages.Account
             if (user != null && BCrypt.Net.BCrypt.Verify(Input.Password, user.Password))
             {
 
-                if(user.isBuyer == 0) //if admin
+                // Store user info in session
+                HttpContext.Session.SetString("Username", user.Username);
+                HttpContext.Session.SetInt32("UserId", user.Id);
+
+                if (user.isBuyer == 0) //if admin
                 {
-                    return RedirectToPage("/aboutus");
+                    return RedirectToPage("/Seller/SellerHomepage");
                 }
                 else
                 {

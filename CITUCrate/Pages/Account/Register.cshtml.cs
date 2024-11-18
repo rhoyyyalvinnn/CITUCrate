@@ -2,6 +2,7 @@ using CITUCrate.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 using BCrypt.Net;
 
@@ -63,19 +64,23 @@ namespace CITUCrate.Pages.Account
                 return Page();
             }
 
+            // Hash the password before saving
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(Input.Password);
+
+            // Create a new user with balance set to 0.00
             var user = new User
             {
                 Username = Input.Username,
                 Email = Input.Email,
                 Password = hashedPassword,
-                isBuyer = 1
+                isBuyer = 1, // Default value, adjust as needed
+                Balance = 0.00m  // Set the balance to 0.00
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            // Redirect to a different page after successful registration
+            // Redirect to the login page after successful registration
             return RedirectToPage("/Account/Login");
         }
     }
