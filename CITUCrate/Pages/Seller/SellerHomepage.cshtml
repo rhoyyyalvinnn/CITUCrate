@@ -11,48 +11,61 @@
     <link rel="stylesheet" href="~/css/sellerhomepage.css" />
 </head>
 <body>
-    <h1>Welcome, @Model.Username!</h1>
+    <div class="whole-body">
+        <h1>Welcome, @Model.Username!</h1>
 
-    <section>
-        <h2>Your Dashboard</h2>
-        <p>Here you can manage your products, view orders, and monitor sales activity.</p>
-    </section>
+        <section>
+            <h2>Your Dashboard</h2>
+            <p>Here you can manage your products, view orders, and monitor sales activity.</p>
+        </section>
 
-    <section>
-        <h3>Quick Actions</h3>
-        <button onclick="location.href='@Url.Page("/Seller/AddProduct")'">Add New Product</button>
-        <button onclick="location.href='@Url.Page("/Seller/OrderManagement")'">View All Orders</button>
-    </section>
+        <section>
+            <h3>Quick Actions</h3>
+            <button onclick="location.href='@Url.Page("/Seller/AddProduct")'">Add New Product</button>
+            <button onclick="location.href='@Url.Page("/Seller/OrderManagement")'">View All Orders</button>
+        </section>
 
-    <section>
-        <h3>Your Products</h3>
-        <!-- Table to display the products -->
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var product in Model.Products)
-                {
-                    <tr>
-                        <td>@product.Name</td>
-                        <td>@product.Category</td>
-                        <td>@product.Price.ToString("C")</td>
-                        <td>@product.Quantity</td>
-                        <td>
-                            <a href="@Url.Page("/Seller/EditProduct", new { id = product.Id })">Edit</a> |
-                            <a href="@Url.Page("/Seller/DeleteProduct", new { id = product.Id })">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </section>
+        <section>
+            <div class="prod_balance">
+                <h3>Your Products</h3>
+                <h3>Balance: $@ViewData["UserBalance"]</h3>
+            </div>
+            
+            <!-- Table to display the products -->
+            @if (Model.Products != null && Model.Products.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in Model.Products)
+                        {
+                            <tr>
+                                <td>@product.Name</td>
+                                <td>@product.Category</td>
+                                <td>@product.Price.ToString("C")</td>
+                                <td>@product.Quantity</td>
+                                <td>
+                                    <a href="@Url.Page("/Seller/EditProduct", new { id = product.Id })">Edit</a> |
+                                    <a href="@Url.Page("/Seller/DeleteProduct", new { id = product.Id })">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p>No products available.</p>
+            }
+        </section>
+    </div>
 </body>
 </html>

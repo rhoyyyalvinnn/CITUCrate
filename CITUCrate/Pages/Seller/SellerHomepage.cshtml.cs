@@ -2,33 +2,40 @@ using CITUCrate.Models; // Assuming Product model is in this namespace
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CITUCrate.Migrations;
 
 namespace CITUCrate.Pages.Seller
 {
     public class SellerHomepageModel : PageModel
     {
         private readonly UserContext _context;
+        private readonly ILogger<SellerHomepageModel> _logger;
 
-        public SellerHomepageModel(UserContext context)
+        public SellerHomepageModel(UserContext context, ILogger<SellerHomepageModel> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public string Username { get; set; }
-
-        // List of products to display on the homepage
         public List<Product> Products { get; set; }
 
-        // Method that runs when the page is loaded
         public async Task OnGetAsync()
         {
-            // Retrieve the Username from the session
             Username = HttpContext.Session.GetString("Username") ?? "Guest";
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == Username);
 
-            // Fetch all products from the database
-            Products = await _context.Products.ToListAsync();
+            decimal balance = user.Balance;
+
+            ViewData["UserBalance"] = balance;
+
+            Products = await _context.Products?.ToListAsync() ?? new List<Product>();
+
+            _logger.LogInformation("Number of products fetched: {ProductCount}", Products.Count);
         }
+
     }
 }

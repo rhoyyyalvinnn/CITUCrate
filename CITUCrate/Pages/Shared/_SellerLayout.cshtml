@@ -17,31 +17,40 @@
             <a href="/Seller/SellerHomepage">
                 <img src="~/images/citucrate_logo.png" alt="Logo" class="navbar-logo">
             </a>
-                <a asp-page="/SellerHomepage">                  Dashboard</a>
-                <a asp-page="/Seller/ProductManagement">        Manage Products</a>
-                <a asp-page="/Seller/OrderManagement">          View Orders</a>
+            <a asp-page="/SellerHomepage"> Dashboard</a>
+            <a asp-page="/Seller/ProductManagement"> Manage Products</a>
+            <a asp-page="/Seller/OrderManagement"> View Orders</a>
         </div>
         <div class="navbar-right">
-                <a asp-page="/Account" asp-page-handler="Logout">Logout</a>
-                <a asp-page="/Seller/Profile">Profile</a>
+            <a asp-page="/Seller/Profile">Profile</a>
+            <!-- Logout Link -->
+            <a href="#" onclick="document.getElementById('logoutForm').submit();">Logout</a>
+
+            <!-- Hidden Form for Logout -->
+            <form id="logoutForm" method="post" asp-page="/Account/Login" asp-page-handler="Logout" style="display: none;">
+                <button type="submit" style="display: none;">Logout</button>  <!-- Invisible button to submit the form -->
+            </form>
         </div>
     </nav>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - CITUCrate - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- JavaScript for triggering the form submission -->
+    <script>
+        document.querySelector('a[href="#"]').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('logoutForm').submit();
+        });
+    </script>
 </body>
 </html>

@@ -38,6 +38,18 @@ namespace CITUCrate.Pages.Account
         {
         }
 
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            // Clear the session to log out the user
+            HttpContext.Session.Clear();
+
+            // Optionally sign out of cookie-based authentication (if used)
+            // await HttpContext.SignOutAsync();
+
+            // Redirect to login page after logging out
+            return RedirectToPage("/Account/Login");
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

@@ -2,6 +2,7 @@ using CITUCrate.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 
 namespace CITUCrate
@@ -26,7 +27,15 @@ namespace CITUCrate
                 options.Cookie.IsEssential = true;
             });
 
-            
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+
+            builder.Services.AddLogging();
+
 
             var app = builder.Build();
 
@@ -42,15 +51,11 @@ namespace CITUCrate
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
-            app.UseSession();
-
+            app.UseAuthentication();
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthorization();
-
             app.MapRazorPages();
-
             app.Run();
         }
 
