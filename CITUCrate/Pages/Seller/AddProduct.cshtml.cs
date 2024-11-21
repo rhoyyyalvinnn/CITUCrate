@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CITUCrate.Pages.Seller
 {
@@ -24,6 +25,7 @@ namespace CITUCrate.Pages.Seller
         {
         }
 
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -31,39 +33,55 @@ namespace CITUCrate.Pages.Seller
                 return Page();
             }
 
-            // Handle image upload
-            if (ImageFile != null)
+            // Check if the product name already exists
+            var existingProduct = await _context.Products
+                .FirstOrDefaultAsync(p => p.Name == NewProduct.Name);
+
+            if (existingProduct != null)
             {
-                // Ensure a unique filename for the image
+                // Set a flag to indicate product exists (we'll use this in JavaScript)
+                TempData["ProductExists"] = true;
+                return Page();  // Return to the same page to show the message
+            }
+
+            // Handle image upload (same as your original code)
+            if (ImageFile != null && ImageFile.Length > 0)
+            {
                 var fileName = Path.GetFileName(ImageFile.FileName);
                 var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", fileName);
 
-                // Save the image to the server
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await ImageFile.CopyToAsync(stream);
                 }
 
-                // Store the relative image path in the database
                 NewProduct.ImageUrl = "/images/productimages/" + fileName;
             }
             else
             {
-                // Default image if no file is uploaded
                 NewProduct.ImageUrl = "/images/default.jpg";
             }
 
-            // Set default category if not provided
             if (string.IsNullOrEmpty(NewProduct.Category))
             {
-                NewProduct.Category = "Uncategorized"; // Default category
+                NewProduct.Category = "Uncategorized";
             }
 
-            // Add the new product to the database
-            _context.Products.Add(NewProduct);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Products.Add(NewProduct);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log error or set a message for the user
+                TempData["ErrorMessage"] = "An error occurred: " + ex.Message;
+                return Page();  // Stay on the same page to show the error
+            }
 
-            // Redirect to the product listing page
+            //_context.Products.Add(NewProduct);
+            //await _context.SaveChangesAsync();
+
             return RedirectToPage("/Seller/SellerHomepage");
         }
     }

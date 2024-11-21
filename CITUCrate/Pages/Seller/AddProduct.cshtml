@@ -6,6 +6,11 @@
 
 <h1>@ViewData["Title"]</h1>
 
+@{
+    // Check if the ProductExists flag is set from TempData
+    var productExists = TempData["ProductExists"] as bool?;
+}
+
 <form method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="Name">Product Name</label>
@@ -55,6 +60,12 @@
     <button type="submit" class="btn btn-primary">Add Product</button>
 </form>
 
+@if (productExists.HasValue && productExists.Value)
+{
+    <div class="alert alert-warning mt-3" id="productExistsAlert">
+        Product already exists. Please update the product on the homepage.
+    </div>
+}
 
 <!-- Later to be transferred to wwwroot in the for the javascript pages-->
 <script>
@@ -66,5 +77,11 @@
             output.style.display = 'block'; // Show the image
         };
         reader.readAsDataURL(event.target.files[0]);
+    }
+
+    if (document.getElementById("productExistsAlert")) {
+        setTimeout(function () {
+            document.getElementById("productExistsAlert").style.display = 'none';
+        }, 5000);  // Hide the message after 5 seconds
     }
 </script>

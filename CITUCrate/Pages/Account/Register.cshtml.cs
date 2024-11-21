@@ -28,7 +28,7 @@ namespace CITUCrate.Pages.Account
 
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [CustomEmailValidation(ErrorMessage = "Email must end with @cit.edu")]
             public string Email { get; set; }
 
             [Required]
@@ -82,6 +82,18 @@ namespace CITUCrate.Pages.Account
 
             // Redirect to the login page after successful registration
             return RedirectToPage("/Account/Login");
+        }
+
+        public class CustomEmailValidation : ValidationAttribute
+        {
+            protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+            {
+                if (value is string email && email.EndsWith("@cit.edu"))
+                {
+                    return ValidationResult.Success;
+                }
+                return new ValidationResult(ErrorMessage);
+            }
         }
     }
 }
