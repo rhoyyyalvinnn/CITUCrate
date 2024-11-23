@@ -23,12 +23,9 @@
         </div>
         <div class="navbar-right">
             <a asp-page="/Seller/AccountManagement">Account Management</a>
-            <!-- Logout Link -->
             <a href="#" onclick="document.getElementById('logoutForm').submit();">Logout</a>
-
-            <!-- Hidden Form for Logout -->
             <form id="logoutForm" method="post" asp-page="/Account/Login" asp-page-handler="Logout" style="display: none;">
-                <button type="submit" style="display: none;">Logout</button>  <!-- Invisible button to submit the form -->
+                <button type="submit" style="display: none;">Logout</button> 
             </form>
         </div>
     </nav>
@@ -45,7 +42,6 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 
-    <!-- JavaScript for triggering the form submission -->
     <script>
         document.querySelector('a[href="#"]').addEventListener('click', function(event) {
             event.preventDefault();
