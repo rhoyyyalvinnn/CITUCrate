@@ -37,10 +37,18 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
+                            <th>
+                                <a asp-page="./SellerHomepage" asp-route-sortOrder="@ViewData["NameSortParm"]" style="text-decoration: none;">Product Name</a>
+                            </th>
+                            <th>
+                                <a asp-page="./SellerHomepage" asp-route-sortOrder="@ViewData["CategorySortParm"]" style="text-decoration: none;">Category</a>
+                            </th>
+                            <th>
+                                <a asp-page="./SellerHomepage" asp-route-sortOrder="@ViewData["PriceSortParm"]" style="text-decoration: none;">Price</a>
+                            </th>
+                            <th>
+                                <a asp-page="./SellerHomepage" asp-route-sortOrder="@ViewData["QuantitySortParm"]" style="text-decoration: none;">Quantity</a>
+                            </th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -60,6 +68,7 @@
                         }
                     </tbody>
                 </table>
+
             }
             else
             {
