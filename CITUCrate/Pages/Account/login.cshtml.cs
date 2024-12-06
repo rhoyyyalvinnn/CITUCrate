@@ -1,5 +1,6 @@
 using CITUCrate.DTO;
 using CITUCrate.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -8,10 +9,12 @@ namespace CITUCrate.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly IUserService _userService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public LoginModel(IUserService userService)
+        public LoginModel(IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
             _userService = userService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [BindProperty]
@@ -33,15 +36,18 @@ namespace CITUCrate.Pages.Account
                 ErrorMessage = "Invalid email or password.";
                 return Page();
             }
+
+            // Store username in the session
+            _httpContextAccessor.HttpContext.Session.SetString("Username", user.Username);
+
             if (user.isBuyer == 1)
             {
                 return RedirectToPage("/aboutus");
             }
-            else 
+            else
             {
                 return RedirectToPage("/Seller/SellerHomepage");
             }
-
         }
     }
 }

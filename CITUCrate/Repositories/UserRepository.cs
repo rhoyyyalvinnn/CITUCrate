@@ -29,6 +29,7 @@ namespace CITUCrate.Repositories
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
         }
+
     }
 
 }

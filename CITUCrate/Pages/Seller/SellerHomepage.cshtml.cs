@@ -1,92 +1,69 @@
 using CITUCrate.DTO;
-using CITUCrate.Models;
+using CITUCrate.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 
 namespace CITUCrate.Pages.Seller
 {
     public class SellerHomepageModel : PageModel
     {
-        private readonly UserContext _context;
+        private readonly IUserService _userService;
+        private readonly IProductService _productService;
         private readonly ILogger<SellerHomepageModel> _logger;
 
-        public SellerHomepageModel(UserContext context, ILogger<SellerHomepageModel> logger)
+        public SellerHomepageModel(IUserService userService, IProductService productService, ILogger<SellerHomepageModel> logger)
         {
-            _context = context;
+            _userService = userService;
+            _productService = productService;
             _logger = logger;
         }
 
         public SellerDashboardDTO SellerDashboard { get; set; }
+        public List<ProductDTO> Products { get; set; }
 
         public async Task OnGetAsync(string sortOrder)
         {
             // Get the username from the session
             var username = HttpContext.Session.GetString("Username") ?? "Guest";
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            var user = await _userService.GetSellerDashboardAsync(username);
 
             if (user == null)
             {
-                // Handle case where user is not found
-                // Redirect to login or show an error
+                // Handle case where user is not found (redirect or show error)
+                _logger.LogWarning("User not found for username: {Username}", username);
+                RedirectToPage("/Account/Login");
                 return;
             }
 
-            // Create the DTO to pass to the view
+            // Populate SellerDashboardDTO
             SellerDashboard = new SellerDashboardDTO
             {
                 Username = user.Username,
-                Balance = user.Balance,
-                Products = await GetProductDTOs(sortOrder)
+                Balance = user.Balance
             };
+
+            // Fetch and sort products
+            var products = await _productService.GetAllProductDTOsAsync();
+            Products = ApplySorting(products, sortOrder);
         }
 
-        private async Task<List<ProductDTO>> GetProductDTOs(string sortOrder)
+        private List<ProductDTO> ApplySorting(List<ProductDTO> products, string sortOrder)
         {
-            var productsQuery = _context.Products.AsQueryable();
-
-            // Apply sorting logic
-            ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewData["CategorySortParm"] = sortOrder == "Category" ? "category_desc" : "Category";
             ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
             ViewData["QuantitySortParm"] = sortOrder == "Quantity" ? "quantity_desc" : "Quantity";
 
-            switch (sortOrder)
+            return sortOrder switch
             {
-                case "name_desc":
-                    productsQuery = productsQuery.OrderByDescending(p => p.Name);
-                    break;
-                case "Category":
-                    productsQuery = productsQuery.OrderBy(p => p.Category);
-                    break;
-                case "category_desc":
-                    productsQuery = productsQuery.OrderByDescending(p => p.Category);
-                    break;
-                case "Price":
-                    productsQuery = productsQuery.OrderBy(p => p.Price);
-                    break;
-                case "price_desc":
-                    productsQuery = productsQuery.OrderByDescending(p => p.Price);
-                    break;
-                case "Quantity":
-                    productsQuery = productsQuery.OrderBy(p => p.Quantity);
-                    break;
-                case "quantity_desc":
-                    productsQuery = productsQuery.OrderByDescending(p => p.Quantity);
-                    break;
-                default:
-                    productsQuery = productsQuery.OrderBy(p => p.Name);
-                    break;
-            }
-
-            var products = await productsQuery.ToListAsync();
-
-            return products.Select(p => new ProductDTO
-            {
-                Name = p.Name,
-                Category = p.Category,
-                Price = p.Price,
-                Quantity = p.Quantity
-            }).ToList();
+                "name_desc" => products.OrderByDescending(p => p.Name).ToList(),
+                "Category" => products.OrderBy(p => p.Category).ToList(),
+                "category_desc" => products.OrderByDescending(p => p.Category).ToList(),
+                "Price" => products.OrderBy(p => p.Price).ToList(),
+                "price_desc" => products.OrderByDescending(p => p.Price).ToList(),
+                "Quantity" => products.OrderBy(p => p.Quantity).ToList(),
+                "quantity_desc" => products.OrderByDescending(p => p.Quantity).ToList(),
+                _ => products.OrderBy(p => p.Name).ToList(),
+            };
         }
     }
 }

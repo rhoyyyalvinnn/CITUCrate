@@ -1,8 +1,8 @@
 ﻿using CITUCrate.DTO;
 using CITUCrate.Models;
-using Microsoft.EntityFrameworkCore;
 using CITUCrate.Services;
 using CITUCrate.Repositories;
+
 
 public class UserService : IUserService
 {
@@ -49,4 +49,28 @@ public class UserService : IUserService
         }
         return null; // Invalid login
     }
+
+
+    public async Task<SellerDashboardDTO> GetSellerDashboardAsync(string username)
+    {
+        // Fetch user from the repository
+        var user = await _userRepository.GetUserByUsernameAsync(username);
+
+        // Check if user is null and handle it appropriately
+        if (user == null)
+        {
+            // You can return a default SellerDashboardDTO or throw an exception
+            // Depending on how you want to handle this scenario
+            return null; // Or you can return a default SellerDashboardDTO
+        }
+
+        // Return the SellerDashboardDTO if user is found
+        return new SellerDashboardDTO
+        {
+            Username = user.Username,
+            Balance = user.Balance
+        };
+    }
+
+
 }
