@@ -19,7 +19,6 @@
 </head>
 <body>
     <div class="whole-body">
-
         <div class="maroon">
             <img src="~/images/cit-ucratemaroon.png" alt="Logo" class="maroon-logo">
             <h2>CIT-U Crate</h2>
@@ -34,20 +33,20 @@
 
             <form method="post">
                 <div class="form-group">
-                    <input asp-for="RegisterData.Username" id="username-input" class="form-control" placeholder="Name" />
-                    <span asp-validation-for="RegisterData.Username" class="text-danger"></span>
+                    <input asp-for="UserData.Username" id="username-input" class="form-control" placeholder="Name" />
+                    <span asp-validation-for="UserData.Username" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input asp-for="RegisterData.Email" id="email-input" class="form-control" placeholder="Please use your institutional email" />
-                    <span asp-validation-for="RegisterData.Email" class="text-danger"></span>
+                    <input asp-for="UserData.Email" id="email-input" class="form-control" placeholder="Please use your institutional email" />
+                    <span asp-validation-for="UserData.Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input asp-for="RegisterData.Password" id="password-input" type="password" class="form-control" placeholder="Password" />
-                    <span asp-validation-for="RegisterData.Password" class="text-danger"></span>
+                    <input asp-for="UserData.Password" id="password-input" type="password" class="form-control" placeholder="Password" />
+                    <span asp-validation-for="UserData.Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input asp-for="RegisterData.ConfirmPassword" type="password" id="password-input" class="form-control" placeholder="Confirm Password" />
-                    <span asp-validation-for="RegisterData.ConfirmPassword" class="text-danger"></span>
+                    <input asp-for="UserData.ConfirmPassword" type="password" id="confirm-password-input" class="form-control" placeholder="Confirm Password" />
+                    <span asp-validation-for="UserData.ConfirmPassword" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Register</button>
                 <p class="loginRed">Already have an account? <a href="/Account/login" style="text-decoration:none; color: #D2AF3D;">Login here</a></p>

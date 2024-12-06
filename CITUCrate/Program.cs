@@ -1,4 +1,6 @@
 using CITUCrate.Models;
+using CITUCrate.Repositories;
+using CITUCrate.Services;
 using Microsoft.EntityFrameworkCore;
 namespace CITUCrate
 {
@@ -16,12 +18,24 @@ namespace CITUCrate
                 options.UseSqlServer(connectionString);
             });
 
+            //builder.Services.AddTransient<IProductService, ProductService>();
+            //builder.Services.AddScoped<IUserRepository, UserRepository>();
+            //builder.Services.AddTransient<IUserRepository, UserRepository>();
+            //builder.Services.AddScoped<IProductService, ProductService>();
+
+            // Register repositories and services with appropriate lifetimes
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();  // Scoped because ProductRepository typically needs a scoped lifetime
+            builder.Services.AddTransient<IProductService, ProductService>();  // Transient is okay for services
+
+            builder.Services.AddScoped<IUserRepository, UserRepository>(); // Scoped for UserRepository
+            builder.Services.AddTransient<IUserService, UserService>();
             builder.Services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(30); // Set session timeout as needed
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
+
 
             builder.Services.AddLogging();
 
