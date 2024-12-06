@@ -1,3 +1,4 @@
+using CITUCrate.DTO;  // Add the DTO namespace
 using CITUCrate.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -19,37 +20,16 @@ namespace CITUCrate.Pages.Account
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public LoginDTO LoginData { get; set; }  // Use LoginDTO
 
         public string ErrorMessage { get; set; } // To hold the error message
 
-        public class InputModel
-        {
-            [Required]
-            [EmailAddress]
-            public required string Email { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            public required string Password { get; set; }
-        }
-
+        // On GET - Display login page (unchanged)
         public void OnGet()
         {
         }
 
-        public async Task<IActionResult> OnPostLogoutAsync()
-        {
-            // Clear the session to log out the user
-            HttpContext.Session.Clear();
-
-            // Optionally sign out of cookie-based authentication (if used)
-            // await HttpContext.SignOutAsync();
-
-            // Redirect to login page after logging out
-            return RedirectToPage("/Account/Login");
-        }
-
+        // On POST - Handle login form submission
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -58,16 +38,15 @@ namespace CITUCrate.Pages.Account
             }
 
             // Check if the user exists in the database
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == Input.Email);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == LoginData.Email);
 
-            if (user != null && BCrypt.Net.BCrypt.Verify(Input.Password, user.Password))
+            if (user != null && BCrypt.Net.BCrypt.Verify(LoginData.Password, user.Password))
             {
-
                 // Store user info in session
                 HttpContext.Session.SetString("Username", user.Username);
                 HttpContext.Session.SetInt32("UserId", user.Id);
 
-                if (user.isBuyer == 0) //if admin
+                if (user.isBuyer == 0) // if admin
                 {
                     return RedirectToPage("/Seller/SellerHomepage");
                 }
@@ -82,6 +61,13 @@ namespace CITUCrate.Pages.Account
                 ErrorMessage = "Invalid login attempt. The email or password is incorrect.";
                 return Page();
             }
+        }
+
+        // Optional POST logout method (unchanged)
+        public async Task<IActionResult> OnPostLogoutAsync()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/Account/Login");
         }
     }
 }

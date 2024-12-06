@@ -12,7 +12,7 @@
 </head>
 <body>
     <div class="whole-body">
-        <h1>Welcome, @Model.Username!</h1>
+        <h1>Welcome, @Model.SellerDashboard.Username!</h1>
 
         <section>
             <h2>Your Dashboard</h2>
@@ -28,11 +28,11 @@
         <section>
             <div class="prod_balance">
                 <h3>Your Products</h3>
-                <h3>Balance: $@ViewData["UserBalance"]</h3>
+                <h3>Balance: $@Model.SellerDashboard.Balance</h3>
             </div>
-            
+
             <!-- Table to display the products -->
-            @if (Model.Products != null && Model.Products.Any())
+            @if (Model.SellerDashboard.Products != null && Model.SellerDashboard.Products.Any())
             {
                 <table class="table">
                     <thead>
@@ -53,7 +53,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var product in Model.Products)
+                        @foreach (var product in Model.SellerDashboard.Products)
                         {
                             <tr>
                                 <td>@product.Name</td>
@@ -68,7 +68,6 @@
                         }
                     </tbody>
                 </table>
-
             }
             else
             {

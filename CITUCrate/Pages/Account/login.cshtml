@@ -1,7 +1,9 @@
 ﻿@page
 @model CITUCrate.Pages.Account.LoginModel
 @{
+    ViewData["Title"] = "Login";
 }
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +16,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/registration.css" />
-
 </head>
 <body>
     <div class="whole-body">
@@ -31,7 +32,6 @@
             </div>
             <h2>LOGIN</h2>
 
-
             <!-- Display error message if exists -->
             @if (!string.IsNullOrEmpty(Model.ErrorMessage))
             {
@@ -40,23 +40,20 @@
                 </div>
             }
 
-
             <form method="post">
                 <div class="form-group">
-                    <input asp-for="Input.Email" id="email-input" class="form-control" placeholder="Email" />
-                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    <input asp-for="LoginData.Email" id="email-input" class="form-control" placeholder="Email" />
+                    <span asp-validation-for="LoginData.Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input asp-for="Input.Password" id="password-input" type="password" class="form-control" placeholder="Password" />
-                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                    <input asp-for="LoginData.Password" id="password-input" type="password" class="form-control" placeholder="Password" />
+                    <span asp-validation-for="LoginData.Password" class="text-danger"></span>
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
-                <p class="loginRed">Dont have an account? <a href="/Account/Register" style="text-decoration:none; color: #D2AF3D;">Register here</a></p>
+                <p class="loginRed">Don't have an account? <a href="/Account/Register" style="text-decoration:none; color: #D2AF3D;">Register here</a></p>
             </form>
         </div>
     </div>
-
-
 
 </body>
 </html>

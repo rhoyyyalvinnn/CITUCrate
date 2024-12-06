@@ -1,10 +1,5 @@
 using CITUCrate.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Authentication.Cookies;
-
-
 namespace CITUCrate
 {
     public class Program
@@ -17,7 +12,8 @@ namespace CITUCrate
             builder.Services.AddRazorPages();
             builder.Services.AddDbContext<UserContext>(options =>
             {
-                options.UseSqlServer("Server=(localdb)\\dbCITUCrate;Database=UserDB;Trusted_Connection=True;TrustServerCertificate=True;");
+                var connectionString = builder.Configuration.GetConnectionString("UserDB");
+                options.UseSqlServer(connectionString);
             });
 
             builder.Services.AddSession(options =>
@@ -27,20 +23,12 @@ namespace CITUCrate
                 options.Cookie.IsEssential = true;
             });
 
-            builder.Services.AddSession(options =>
-            {
-                options.IdleTimeout = TimeSpan.FromMinutes(30);
-                options.Cookie.HttpOnly = true;
-                options.Cookie.IsEssential = true;
-            });
-
             builder.Services.AddLogging();
-
 
             var app = builder.Build();
 
             // Seed admin user if not exists
-            SeedAdminUser(app);
+            DatabaseSeeder.SeedAdminUser(app.Services);
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -57,31 +45,6 @@ namespace CITUCrate
             app.UseAuthorization();
             app.MapRazorPages();
             app.Run();
-        }
-
-        private static void SeedAdminUser(WebApplication app)
-        {
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<UserContext>();
-
-                // Check if the admin user already exists
-                if (!context.Users.Any(u => u.Username == "AdminSeller"))
-                {
-                    // Create the admin user
-                    var adminUser = new User
-                    {
-                        Username = "AdminSeller",
-                        Email = "adminseller@admin.com",
-                        Password = BCrypt.Net.BCrypt.HashPassword("adminseller123"), // Hash the password
-                        isBuyer = 0 // Set as admin (assuming 0 means admin)
-                    };
-
-                    context.Users.Add(adminUser);
-                    context.SaveChanges(); // Save changes to the database
-                }
-            }
         }
     }
 }

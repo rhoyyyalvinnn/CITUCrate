@@ -1,3 +1,4 @@
+using CITUCrate.DTO; // Add the DTO namespace
 using CITUCrate.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,37 +19,14 @@ namespace CITUCrate.Pages.Account
         }
 
         [BindProperty]
-        public InputModel Input { get; set; }
+        public RegisterDTO RegisterData { get; set; }  // Change to RegisterDTO
 
-        public class InputModel
-        {
-            [Required]
-            [Display(Name = "Username")]
-            public string Username { get; set; }
-
-            [Required]
-            [EmailAddress]
-            [CustomEmailValidation(ErrorMessage = "Email must end with @cit.edu")]
-            public string Email { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            [Display(Name = "Password")]
-            public string Password { get; set; }
-
-            [Required]
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm Password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
-
-            public int isBuyer { get; set; }
-        }
-
+        // On GET - Display registration form (unchanged)
         public void OnGet()
         {
         }
 
+        // On POST - Handle registration form submission
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -58,42 +36,39 @@ namespace CITUCrate.Pages.Account
 
             // Check for reserved usernames
             string[] reservedUsernames = { "Admin", "adminseller" }; // Add other reserved usernames here
-            if (reservedUsernames.Contains(Input.Username, StringComparer.OrdinalIgnoreCase))
+            if (reservedUsernames.Contains(RegisterData.Username, StringComparer.OrdinalIgnoreCase))
             {
-                ModelState.AddModelError("Input.Username", "This username is reserved and cannot be used.");
+                ModelState.AddModelError("RegisterData.Username", "This username is reserved and cannot be used.");
                 return Page();
             }
 
-            // Hash the password before saving
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(Input.Password);
+            // Check if passwords match
+            if (RegisterData.Password != RegisterData.ConfirmPassword)
+            {
+                ModelState.AddModelError("RegisterData.ConfirmPassword", "Passwords do not match.");
+                return Page();
+            }
 
-            // Create a new user with balance set to 0.00
+            if (!RegisterData.Email.EndsWith("@cit.edu"))
+            {
+                ModelState.AddModelError("RegisterData.Email", "Email must end with @cit.edu.");
+                return Page();
+            }
+
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(RegisterData.Password);
+
             var user = new User
             {
-                Username = Input.Username,
-                Email = Input.Email,
+                Username = RegisterData.Username,
+                Email = RegisterData.Email,
                 Password = hashedPassword,
-                isBuyer = 1, // Default value, adjust as needed
-                Balance = 0.00m  // Set the balance to 0.00
+                isBuyer = 1,
+                Balance = 0.00m
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-
-            // Redirect to the login page after successful registration
             return RedirectToPage("/Account/Login");
-        }
-
-        public class CustomEmailValidation : ValidationAttribute
-        {
-            protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-            {
-                if (value is string email && email.EndsWith("@cit.edu"))
-                {
-                    return ValidationResult.Success;
-                }
-                return new ValidationResult(ErrorMessage);
-            }
         }
     }
 }
