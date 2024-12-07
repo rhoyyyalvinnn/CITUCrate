@@ -33,15 +33,15 @@
     <!-- Category Dropdown -->
     <div class="form-group">
         <label for="Category">Category</label>
-        <select class="form-control" id="Category" name="Category" required>
-            <option value="Writing Instruments">Writing Instruments</option>
-            <option value="Paper Products">Paper Products</option>
-            <option value="Art Supplies">Art Supplies</option>
-            <option value="Organizational Supplies">Organizational Supplies</option>
-            <option value="Desk Supplies">Desk Supplies</option>
-            <option value="Technology Accessories">Technology Accessories</option>
-            <option value="Science Equipment">Science Equipment</option>
-        </select>
+            <select class="form-control" id="Category" name="Category" required>
+                <option value="Writing Instruments">Writing Instruments</option>
+                <option value="Paper Products">Paper Products</option>
+                <option value="Art Supplies">Art Supplies</option>
+                <option value="Organizational Supplies">Organizational Supplies</option>
+                <option value="Desk Supplies">Desk Supplies</option>
+                <option value="Technology Accessories">Technology Accessories</option>
+                <option value="Science Equipment">Science Equipment</option>
+            </select>
     </div>
 
     <!-- Image Preview -->
@@ -68,12 +68,12 @@
     <button type="submit" class="btn btn-primary">Add Product</button>
 </form>
 
-@if (productExists.HasValue && productExists.Value)
-{
-    <div class="alert alert-warning mt-3" id="productExistsAlert">
-        Product already exists. Please update the product on the homepage.
-    </div>
-}
+        @if (TempData["ProductAlreadyExists"] != null)
+            {
+                <div class="alert alert-warning mt-3" id="productExistsAlert">
+                    Product already exists. Please update the product on the homepage.
+                </div>
+            }
 
 <!-- Later to be transferred to wwwroot in the for the javascript pages-->
 <script>
