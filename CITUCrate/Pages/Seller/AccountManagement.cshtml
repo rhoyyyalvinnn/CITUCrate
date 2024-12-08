@@ -21,7 +21,7 @@
                 <th>Username</th>
                 <th>Email</th>
                 <th>Balance</th>
-                <th>Is Buyer</th>
+                <th>Role</th> <!-- Updated to "Role" -->
             </tr>
         </thead>
         <tbody>
@@ -34,7 +34,7 @@
                         <td>@user.Username</td>
                         <td>@user.Email</td>
                         <td>@user.Balance.ToString("F2")</td>
-                        <td>@(user.isBuyer == 1 ? "Yes" : "No")</td>
+                        <td>@(user.isBuyer == 1 ? "Buyer" : "Seller")</td> <!-- Updated logic -->
                     </tr>
                 }
             }

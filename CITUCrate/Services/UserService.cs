@@ -72,5 +72,19 @@ public class UserService : IUserService
         };
     }
 
+    public async Task<List<UserDashboardDTO>> GetAllUserDashboardDTOAsync()
+    {
+        var users = await _userRepository.GetAllUserAsync();
+
+        return users.Select(p => new UserDashboardDTO
+        {
+            Id = p.Id,
+            Username = p.Username,
+            Email = p.Email,
+            Balance = p.Balance,
+            isBuyer = p.isBuyer
+        }).ToList();
+    }
+
 
 }
