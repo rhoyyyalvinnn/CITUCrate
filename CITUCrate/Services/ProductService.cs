@@ -23,11 +23,13 @@ namespace CITUCrate.Services
                 Name = p.Name,
                 Category = p.Category,
                 Price = p.Price,
-                Quantity = p.Quantity
+                Quantity = p.Quantity,
+                ShortDescription = p.ShortDescription,
+                ImageUrl = p.ImageUrl,
             }).ToList();
         }
 
-        public async Task<bool> AddProductAsync(AddProductDTO addProductDto, IFormFile imageFile)
+        public async Task<bool> AddProductAsync(AddUpdateProductDTO addProductDto, IFormFile imageFile)
         {
             var existingProduct = await _productRepository.GetProductByNameAsync(addProductDto.Name);
             if (existingProduct != null)
@@ -67,5 +69,73 @@ namespace CITUCrate.Services
             await _productRepository.AddProductAsync(newProduct);
             return true;
         }
+
+
+        // Get a product by ID
+        public async Task<ProductDTO> GetProductByIdAsync(int id)
+        {
+            var product = await _productRepository.GetProductByIdAsync(id);
+            if (product == null) return null;
+
+            // Manually map Product to ProductDTO
+            var productDto = new ProductDTO
+            {
+                ID = product.Id,
+                Name = product.Name,
+                Category = product.Category,
+                Price = product.Price,
+                Quantity = product.Quantity,
+                ShortDescription = product.ShortDescription,
+                ImageUrl = product.ImageUrl,
+            };
+
+            return productDto;
+        }
+
+        // Update an existing product
+        public async Task<bool> UpdateProductAsync(int productId, AddUpdateProductDTO updateProductDTO, IFormFile imageFile)
+        {
+            // Retrieve the existing product
+            var existingProduct = await _productRepository.GetProductByIdAsync(productId);
+
+            // Handle image update if a new image is provided
+            string imageUrl = "/images/productimages/default.jpeg";
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var productImagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "productimages");
+                if (!Directory.Exists(productImagesFolder))
+                {
+                    Directory.CreateDirectory(productImagesFolder);
+                }
+
+                var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(imageFile.FileName)}";
+                var filePath = Path.Combine(productImagesFolder, uniqueFileName);
+
+                // Save the new image file
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+                imageUrl = $"/images/productimages/{uniqueFileName}";
+            }
+
+            // Update the product properties with the new values from the DTO
+            existingProduct.Name = updateProductDTO.Name;
+            existingProduct.Category = updateProductDTO.Category;
+            existingProduct.Price = updateProductDTO.Price;
+            existingProduct.Quantity = updateProductDTO.Quantity;
+            existingProduct.ShortDescription = updateProductDTO.ShortDescription;
+            existingProduct.ImageUrl = imageUrl;  // Update image URL if a new image was uploaded
+
+            // Save the updated product to the repository
+            await _productRepository.UpdateProductAsync(existingProduct);
+            return true;
+        }
+        // Delete a product
+        public async Task DeleteProductAsync(int id)
+        {
+            await _productRepository.DeleteProductAsync(id);
+        }
     }
 }
+

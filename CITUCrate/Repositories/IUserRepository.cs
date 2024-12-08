@@ -9,6 +9,8 @@ namespace CITUCrate.Repositories
         Task<User> GetUserByUsernameAsync(string username);
         Task<List<User>> GetAllUserAsync();
 
+
+
     }
 
 }

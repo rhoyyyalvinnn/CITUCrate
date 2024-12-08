@@ -16,7 +16,7 @@ namespace CITUCrate.Pages.Seller
         }
 
         [BindProperty]
-        public AddProductDTO NewProduct { get; set; }
+        public AddUpdateProductDTO NewProduct { get; set; }
         [BindProperty]
         public IFormFile ImageFile { get; set; } // For handling file uploads
 

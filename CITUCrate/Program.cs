@@ -17,7 +17,6 @@ namespace CITUCrate
                 var connectionString = builder.Configuration.GetConnectionString("UserDB");
                 options.UseSqlServer(connectionString);
             });
-
             builder.Services.AddScoped<IProductRepository, ProductRepository>();  // Scoped because ProductRepository typically needs a scoped lifetime
             builder.Services.AddTransient<IProductService, ProductService>();  // Transient is okay for services
 

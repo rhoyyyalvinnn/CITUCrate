@@ -5,6 +5,11 @@ namespace CITUCrate.Services
     public interface IProductService
     {
         Task<List<ProductDTO>> GetAllProductDTOsAsync();
-        Task<bool> AddProductAsync(AddProductDTO addProductDto, IFormFile imageFile); // Returns true if successful
+        Task<bool> AddProductAsync(AddUpdateProductDTO addProductDto, IFormFile imageFile); // Returns true if successful
+
+        Task<ProductDTO> GetProductByIdAsync(int id);
+
+        Task <bool> UpdateProductAsync(int productId, AddUpdateProductDTO updateProductDTO, IFormFile imageFile);
+        Task DeleteProductAsync(int id);
     }
 }

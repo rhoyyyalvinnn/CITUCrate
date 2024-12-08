@@ -1,6 +1,6 @@
 ﻿namespace CITUCrate.DTO
 {
-    public class AddProductDTO
+    public class AddUpdateProductDTO
     {
         public string Name { get; set; }
         public string Category { get; set; }

@@ -29,5 +29,39 @@ namespace CITUCrate.Repositories
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
         }
+
+
+        public async Task<Product> GetProductByIdAsync(int id)
+        {
+            return await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async Task UpdateProductAsync(Product product)
+        {
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteProductAsync(int id)
+        {
+            var product = await GetProductByIdAsync(id);
+            if (product != null)
+            {
+                _context.Products.Remove(product);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+
+
+
+        public async Task<int> GetProductIdByNameAsync(string name)
+        {
+            var product = await _context.Products
+                .Where(p => p.Name == name)
+                .FirstOrDefaultAsync();
+
+            return product.Id;
+        }
     }
 }
