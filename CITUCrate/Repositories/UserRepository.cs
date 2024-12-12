@@ -12,13 +12,10 @@ namespace CITUCrate.Repositories
             _context = context;
         }
 
-        // Get user by email
         public async Task<User> GetUserByEmailAsync(string email)
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         }
-
-        // Add a new user
         public async Task AddUserAsync(User user)
         {
             await _context.Users.AddAsync(user);

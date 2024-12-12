@@ -22,6 +22,9 @@ namespace CITUCrate
 
             builder.Services.AddScoped<IUserRepository, UserRepository>(); // Scoped for UserRepository
             builder.Services.AddScoped<IUserService, UserService>(); // Use Scoped for services interacting with 
+            //builder.Services.AddScoped<OrderRepository>();
+            //builder.Services.AddScoped<OrderService>();
+
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             builder.Services.AddSession(options =>
             {

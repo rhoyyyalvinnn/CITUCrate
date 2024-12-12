@@ -71,13 +71,11 @@ namespace CITUCrate.Services
         }
 
 
-        // Get a product by ID
         public async Task<ProductDTO> GetProductByIdAsync(int id)
         {
             var product = await _productRepository.GetProductByIdAsync(id);
             if (product == null) return null;
 
-            // Manually map Product to ProductDTO
             var productDto = new ProductDTO
             {
                 ID = product.Id,
@@ -92,10 +90,9 @@ namespace CITUCrate.Services
             return productDto;
         }
 
-        // Update an existing product
         public async Task<bool> UpdateProductAsync(int productId, AddUpdateProductDTO updateProductDTO, IFormFile imageFile)
         {
-            // Retrieve the existing product
+
             var existingProduct = await _productRepository.GetProductByIdAsync(productId);
             if (existingProduct == null)
             {

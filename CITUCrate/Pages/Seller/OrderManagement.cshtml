@@ -15,118 +15,120 @@
 </head>
 <body>
 
-<h2>Order Management</h2>
+    <h2>Order Management</h2>
 
-<h3>Pending Orders</h3>
-@if (Model.PendingOrders == null || !Model.PendingOrders.Any())
-{
-    <p>No pending orders available yet.</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>User</th>
-                <th>Product(s)</th>
-                <th>Total Amount</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var order in Model.PendingOrders)
-            {
+    <h3>Pending Orders</h3>
+    @if (Model.PendingOrders == null || !Model.PendingOrders.Any())
+    {
+        <p>No pending orders available yet.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@order.Id</td>
-                    <td>@order.User?.Username</td>
-                    <td>
-                        @if (order.OrderItems != null && order.OrderItems.Any())
-                        {
-                            <ul>
-                                @foreach (var orderItem in order.OrderItems)
-                                {
-                                    <li>
-                                        @orderItem.Product?.Name - 
-                                        Quantity: @orderItem.Quantity - 
-                                        Subtotal: @orderItem.Subtotal.ToString("C")
-                                    </li>
-                                }
-                            </ul>
-                        }
-                        else
-                        {
-                            <p>No items in this order.</p>
-                        }
-                    </td>
-                    <td>@order.Total.ToString("C")</td>
-                        <td style="display: flex; align-items: center; gap: 10px;">
+                    <th>Order ID</th>
+                    <th>User</th>
+                    <th>Product(s)</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model.PendingOrders)
+                {
+                    <tr>
+                        <td data-label="Order ID">@order.Id</td>
+                        <td data-label="User">@order.User?.Username</td>
+                        <td data-label="Product(s)">
+                            @if (order.OrderItems != null && order.OrderItems.Any())
+                            {
+                                <ul>
+                                    @foreach (var orderItem in order.OrderItems)
+                                    {
+                                        <li>
+                                            @orderItem.Product?.Name -
+                                            Quantity: @orderItem.Quantity -
+                                            Subtotal: @orderItem.Subtotal.ToString("C")
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p>No items in this order.</p>
+                            }
+                        </td>
+                        <td data-label="Total Amount">@order.Total.ToString("C")</td>
+                        <td data-label="Status" style="display: flex; align-items: center; gap: 10px;">
                             <form method="post">
                                 <input type="hidden" name="orderId" value="@order.Id" />
                                 <select name="orderStatus" class="form-control">
                                     <option value="Pending" selected="@(order.Status == "Pending")">Pending</option>
                                     <option value="Completed" selected="@(order.Status == "Completed")">Completed</option>
                                 </select>
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </form>
+                        <td data-label="Update">
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+                        </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 
-<!-- Completed Orders Table -->
-<h3>Completed Orders</h3>
-@if (Model.CompletedOrders == null || !Model.CompletedOrders.Any())
-{
-    <p>No completed orders available yet.</p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Order ID</th>
-                <th>User</th>
-                <th>Product(s)</th>
-                <th>Total Amount</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var order in Model.CompletedOrders)
-            {
+    <!-- Completed Orders Table -->
+    <h3>Completed Orders</h3>
+    @if (Model.CompletedOrders == null || !Model.CompletedOrders.Any())
+    {
+        <p>No completed orders available yet.</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@order.Id</td>
-                    <td>@order.User.Username</td>
-                    <td>
-                        @if (order.OrderItems != null && order.OrderItems.Any())
-                        {
-                            <ul>
-                                @foreach (var orderItem in order.OrderItems)
-                                {
-                                    <li>
-                                        @orderItem.Product?.Name - 
-                                        Quantity: @orderItem.Quantity - 
-                                        Subtotal: @orderItem.Subtotal.ToString("C")
-                                    </li>
-                                }
-                            </ul>
-                        }
-                        else
-                        {
-                            <p>No items in this order.</p>
-                        }
-                    </td>
-                    <td>@order.Total.ToString("C")</td>
-                    <td>Completed</td>
+                    <th>Order ID</th>
+                    <th>User</th>
+                    <th>Product(s)</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-}
-
+            </thead>
+            <tbody>
+                @foreach (var order in Model.CompletedOrders)
+                {
+                    <tr>
+                        <td data-label="Order ID">@order.Id</td>
+                        <td data-label="User">@order.User.Username</td>
+                        <td data-label="Product(s)">
+                            @if (order.OrderItems != null && order.OrderItems.Any())
+                            {
+                                <ul>
+                                    @foreach (var orderItem in order.OrderItems)
+                                    {
+                                        <li>
+                                            @orderItem.Product?.Name -
+                                            Quantity: @orderItem.Quantity -
+                                            Subtotal: @orderItem.Subtotal.ToString("C")
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            else
+                            {
+                                <p>No items in this order.</p>
+                            }
+                        </td>
+                        <td data-label="Total Amount">@order.Total.ToString("C")</td>
+                        <td data-label="Status">Completed</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
 
     <script>
         document.querySelector("form").addEventListener("submit", function() {

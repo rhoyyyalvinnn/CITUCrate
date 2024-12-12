@@ -53,15 +53,11 @@ public class UserService : IUserService
 
     public async Task<SellerDashboardDTO> GetSellerDashboardAsync(string username)
     {
-        // Fetch user from the repository
         var user = await _userRepository.GetUserByUsernameAsync(username);
 
-        // Check if user is null and handle it appropriately
         if (user == null)
         {
-            // You can return a default SellerDashboardDTO or throw an exception
-            // Depending on how you want to handle this scenario
-            return null; // Or you can return a default SellerDashboardDTO
+            return null; 
         }
 
         // Return the SellerDashboardDTO if user is found

@@ -7,7 +7,7 @@
 }
 
 table {
-    width: 80%;
+    width: 90%;
     border-collapse: collapse;
     margin: 20px auto;
 }
@@ -33,4 +33,35 @@ tr:hover {
     font-size: 18px;
     color: #666;
     margin-top: 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    table, th, td {
+        display: block;
+        width: 100%;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tr {
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    td {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+        td:before {
+            content: attr(data-label);
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-right: 10px;
+        }
 }

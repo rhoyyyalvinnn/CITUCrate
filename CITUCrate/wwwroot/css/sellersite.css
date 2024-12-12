@@ -1,1 +1,87 @@
-﻿
+﻿.navbar {
+    font-size: 48px;
+    background-color: #401D1D;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100px;
+}
+
+    .navbar a {
+        text-decoration: none;
+        margin: 0 10px;
+        font-weight: bold;
+    }
+
+        /* Change color on hover */
+        .navbar a:hover {
+            color: #FFFFFF !important;
+        }
+
+        .navbar a:active {
+            color: #FFFFFF !important;
+        }
+
+/* Left side of the navbar */
+.navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+    .navbar-left img {
+        height: 70px;
+        width: auto;
+    }
+
+/* Logo styling */
+.navbar-logo {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+}
+
+/* Right side of the navbar */
+.navbar-right {
+    display: flex;
+}
+
+    .navbar-left a, .navbar-right a {
+        font-family: "Jersey 10", sans-serif;
+        font-style: normal;
+        text-decoration: none;
+        color: #D2AF3D !important;
+    }
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+    background-color: #BAB8B8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        height: auto;
+        font-size: 36px;
+        text-align: center;
+    }
+
+    .navbar-left, .navbar-right {
+        flex-direction: column;
+        align-items: center;
+    }
+
+        .navbar-left a, .navbar-right a {
+            margin: 5px 0;
+        }
+
+        .navbar-left img {
+            height: 50px;
+        }
+}
