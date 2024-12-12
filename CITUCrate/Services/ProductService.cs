@@ -134,9 +134,9 @@ namespace CITUCrate.Services
         }
 
         // Delete a product
-        public async Task DeleteProductAsync(int id)
+        public async Task<bool> DeleteProductAsync(int productId)
         {
-            await _productRepository.DeleteProductAsync(id);
+            return await _productRepository.DeleteProductAsync(productId);
         }
     }
 }

@@ -10,6 +10,6 @@ namespace CITUCrate.Services
         Task<ProductDTO> GetProductByIdAsync(int id);
 
         Task <bool> UpdateProductAsync(int productId, AddUpdateProductDTO updateProductDTO, IFormFile imageFile);
-        Task DeleteProductAsync(int id);
+        Task<bool> DeleteProductAsync(int productId);
     }
 }
