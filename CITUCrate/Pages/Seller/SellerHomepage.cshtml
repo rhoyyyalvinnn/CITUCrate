@@ -50,6 +50,9 @@
                             <th>
                                 <a asp-page="./SellerHomepage" asp-route-sortOrder="@ViewData["QuantitySortParm"]" style="text-decoration: none;">Quantity</a>
                             </th>
+                            <th>
+                                <a asp-page="./SellerHomepage" asp-route-sortOrder="@ViewData["TotalSalesSortParm"]" style="text-decoration: none;">TotalSales</a>
+                            </th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -61,6 +64,7 @@
                                 <td>@product.Category</td>
                                 <td>@product.Price.ToString("C")</td>
                                 <td>@product.Quantity</td>
+                                <td>@product.TotalSales</td>
                                 <td>
                                     <button type="button" onclick="openModal(
                                          @product.ID,
@@ -92,7 +96,6 @@
         </section>
     </div>
 
-    <!-- Edit Product Modal -->
     <!-- Edit Product Modal -->
     <div id="editProductModal" class="modal">
         <div class="modal-content">
@@ -150,10 +153,6 @@
             </form>
         </div>
     </div>
-
-
-
-
 
 <script>
         function openModal(id, name, category, price, quantity, shortDescription, imageUrl) {

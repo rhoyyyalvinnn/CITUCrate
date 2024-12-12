@@ -55,6 +55,7 @@ namespace CITUCrate.Pages.Seller
             ViewData["CategorySortParm"] = sortOrder == "Category" ? "category_desc" : "Category";
             ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
             ViewData["QuantitySortParm"] = sortOrder == "Quantity" ? "quantity_desc" : "Quantity";
+            ViewData["TotalSalesSortParm"] = sortOrder == "TotalSales" ? "totalsales_desc" : "TotalSales";
 
             return sortOrder switch
             {
@@ -65,9 +66,12 @@ namespace CITUCrate.Pages.Seller
                 "price_desc" => products.OrderByDescending(p => p.Price).ToList(),
                 "Quantity" => products.OrderBy(p => p.Quantity).ToList(),
                 "quantity_desc" => products.OrderByDescending(p => p.Quantity).ToList(),
+                "TotalSales" => products.OrderBy(p => p.TotalSales).ToList(),
+                "totalsales_desc" => products.OrderByDescending(p => p.TotalSales).ToList(),
                 _ => products.OrderBy(p => p.Name).ToList(),
             };
         }
+
         public async Task<IActionResult> OnPostUpdateAsync(int productID, IFormCollection form, IFormFile imageFile)
         {
             if (productID == 0)
@@ -103,7 +107,6 @@ namespace CITUCrate.Pages.Seller
 
             return RedirectToPage();
         }
-
         public async Task<IActionResult> OnPostDeleteAsync(int productId)
         {
             if (productId == 0)
