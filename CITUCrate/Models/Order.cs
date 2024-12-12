@@ -10,4 +10,5 @@ public class Order
 
     public decimal Total { get; set; }
     public string Status { get; set; } = "Pending";
+    public string deliveryLocation { get; set; }
 }

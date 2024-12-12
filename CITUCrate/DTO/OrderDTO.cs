@@ -7,4 +7,5 @@ public class OrderDTO
     public List<OrderItemDTO> OrderItems { get; set; }
     public decimal Total { get; set; }
     public string Status { get; set; }
+    public string deliveryLocation { get; set; }
 }
