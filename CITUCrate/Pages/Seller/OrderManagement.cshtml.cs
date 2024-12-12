@@ -1,62 +1,57 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using CITUCrate.Models;
-using System.Linq;
-using Microsoft.Extensions.Logging;  // For ILogger
+using Microsoft.Extensions.Logging; // For ILogger
+using CITUCrate.DTO;
+using CITUCrate.Services; // For IOrderService
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CITUCrate.Pages.Seller
 {
     public class OrderManagementModel : PageModel
     {
-        private readonly UserContext _context;
-        private readonly ILogger<OrderManagementModel> _logger;  // Injecting ILogger
+        private readonly IOrderService _orderService;
+        private readonly ILogger<OrderManagementModel> _logger; // Injecting ILogger
 
-        public OrderManagementModel(UserContext context, ILogger<OrderManagementModel> logger)
+        public OrderManagementModel(IOrderService orderService, ILogger<OrderManagementModel> logger)
         {
-            _context = context;
-            _logger = logger;  // Storing the logger
+            _orderService = orderService;
+            _logger = logger;
         }
 
-        public List<Order> PendingOrders { get; set; }
-        public List<Order> CompletedOrders { get; set; }
+        public List<OrderDTO> PendingOrders { get; set; }
+        public List<OrderDTO> CompletedOrders { get; set; }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            // Fetch orders based on their status
-            PendingOrders = _context.Orders.Include(o => o.OrderItems)
-                                           .ThenInclude(oi => oi.Product)
-                                           .Where(o => o.Status == "Pending")
-                                           .ToList() ?? new List<Order>();  // Default to empty list if null
-
-            CompletedOrders = _context.Orders.Include(o => o.OrderItems)
-                                              .ThenInclude(oi => oi.Product)
-                                              .Where(o => o.Status == "Completed")
-                                              .ToList() ?? new List<Order>();  // Default to empty list if null
-        }
-
-        // Method to update order status when the form is submitted
-        public IActionResult OnPost(int orderId, string orderStatus)
-        {
-            var order = _context.Orders.FirstOrDefault(o => o.Id == orderId);
-            if (order != null)
+            try
             {
-                order.Status = orderStatus;
-                _context.SaveChanges();
+                PendingOrders = await _orderService.GetOrdersByStatusAsync("Pending") ?? new List<OrderDTO>();
+                CompletedOrders = await _orderService.GetOrdersByStatusAsync("Completed") ?? new List<OrderDTO>();
+            }
+            catch (System.Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching orders on GET");
+                PendingOrders = new List<OrderDTO>();
+                CompletedOrders = new List<OrderDTO>();
+            }
+        }
+
+        public async Task<IActionResult> OnPostAsync(int orderId, string orderStatus)
+        {
+            try
+            {
+                _logger.LogInformation("Updating order ID {OrderId} to status {OrderStatus}", orderId, orderStatus);
+                await _orderService.UpdateOrderStatusAsync(orderId, orderStatus);
+                _logger.LogInformation("Order ID {OrderId} updated successfully", orderId);
+            }
+            catch (System.Exception ex)
+            {
+                _logger.LogError(ex, "Error updating order ID {OrderId} to status {OrderStatus}", orderId, orderStatus);
             }
 
-            // Reload orders
-            PendingOrders = _context.Orders.Include(o => o.OrderItems)
-                                           .ThenInclude(oi => oi.Product)
-                                           .Where(o => o.Status == "Pending")
-                                           .ToList();
-
-            CompletedOrders = _context.Orders.Include(o => o.OrderItems)
-                                             .ThenInclude(oi => oi.Product)
-                                             .Where(o => o.Status == "Completed")
-                                             .ToList();
-
-            return RedirectToPage(); // Redirect to the same page to refresh the table
+            // Refresh the page
+            return RedirectToPage();
         }
     }
 }

@@ -102,7 +102,7 @@
                 {
                     <tr>
                         <td data-label="Order ID">@order.Id</td>
-                        <td data-label="User">@order.User.Username</td>
+                        <td data-label="User">@order.User?.Username</td>
                         <td data-label="Product(s)">
                             @if (order.OrderItems != null && order.OrderItems.Any())
                             {
@@ -122,6 +122,7 @@
                                 <p>No items in this order.</p>
                             }
                         </td>
+
                         <td data-label="Total Amount">@order.Total.ToString("C")</td>
                         <td data-label="Status">Completed</td>
                     </tr>
