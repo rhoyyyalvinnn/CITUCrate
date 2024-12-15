@@ -1,0 +1,103 @@
+﻿/* General layout */
+body {
+    font-family: 'Jersey 10', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* Container for the top-up form */
+.container {
+    max-width: 500px;
+    margin-top: 10vh;
+    background-color: white;
+    padding: 0.5px 30px 30px 30px;
+    border-radius: 8px;
+}
+
+/* Heading style */
+h2 {
+    text-align: center;
+    color: #333;
+    font-size: 42px;
+    margin-bottom: 20px;
+}
+
+/* Balance text */
+p {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Form elements */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+}
+
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+    input[type="number"]:focus {
+        margin-top: 5px;
+        border-color: #007bff;
+        outline: none;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    }
+
+/* Button style */
+button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    color: white;
+    background-color: #401D1D;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    button[type="submit"]:hover {
+        background-color: #6f2828;
+    }
+
+/* Success message */
+.alert {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    padding: 15px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    button[type="submit"] {
+        font-size: 16px;
+    }
+}

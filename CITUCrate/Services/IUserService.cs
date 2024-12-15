@@ -10,6 +10,8 @@ namespace CITUCrate.Services
         Task<SellerDashboardDTO> GetSellerDashboardAsync(string username);
 
         Task<List<UserDashboardDTO>> GetAllUserDashboardDTOAsync();
+        Task<string> TopUpBalanceAsync(TopUpDTO topUpDTO, string username);
+        Task<User> GetUserByUsernameAsync(string username);
     }
 
 }
