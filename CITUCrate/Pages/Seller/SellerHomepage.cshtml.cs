@@ -93,11 +93,11 @@ namespace CITUCrate.Pages.Seller
                 Name = form["Name"],
                 Category = form["Category"],
                 Price = decimal.TryParse(form["Price"], out var price) ? price : 0m,
-                Quantity = int.TryParse(form["Quantity"], out var quantity) ? quantity : 0, 
-                ShortDescription = form["ShortDescription"] 
+                Quantity = int.TryParse(form["Quantity"], out var quantity) ? quantity : 0,
+                ShortDescription = form["ShortDescription"]
             };
 
-            var success = await _productService.UpdateProductAsync(productID, updateProductDTO, imageFile); 
+            var success = await _productService.UpdateProductAsync(productID, updateProductDTO, imageFile);
 
             if (!success)
             {
@@ -107,64 +107,6 @@ namespace CITUCrate.Pages.Seller
 
             return RedirectToPage();
         }
-        public async Task<IActionResult> OnPostDeleteAsync(int productId)
-        {
-            if (productId == 0)
-            {
-                _logger.LogWarning("Invalid product ID for deletion.");
-                return NotFound();
-            }
-
-            _logger.LogInformation("Deleting product with ID: {ProductId}", productId);
-
-            // Retrieve the product from the database
-            var product = await _productService.GetProductByIdAsync(productId);
-
-            if (product == null)
-            {
-                _logger.LogWarning("Product with ID {ProductId} not found.", productId);
-                return NotFound();
-            }
-
-            // Get the image path from the product object (assuming ImageUrl stores the file path)
-            string imagePath = product.ImageUrl;
-
-            // Attempt to delete the product
-            var success = await _productService.DeleteProductAsync(productId);
-
-            if (!success)
-            {
-                _logger.LogWarning("Product with ID {ProductId} could not be deleted.", productId);
-                return NotFound();
-            }
-
-            if (!string.IsNullOrEmpty(imagePath))
-            {
-                // Combine the root directory (wwwroot) with the relative image path stored in the database
-                string fullImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", imagePath.TrimStart('/'));
-
-                // Check if the file exists and delete it
-                if (System.IO.File.Exists(fullImagePath))
-                {
-                    try
-                    {
-                        System.IO.File.Delete(fullImagePath);
-                        _logger.LogInformation("Image for product with ID {ProductId} deleted successfully.", productId);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError("Error deleting image for product with ID {ProductId}: {ErrorMessage}", productId, ex.Message);
-                    }
-                }
-                else
-                {
-                    _logger.LogWarning("Image file for product with ID {ProductId} not found at {ImagePath}.", productId, fullImagePath);
-                }
-            }
-
-
-            _logger.LogInformation("Product with ID {ProductId} deleted successfully.", productId);
-            return RedirectToPage();
-        }
+        
     }
 }

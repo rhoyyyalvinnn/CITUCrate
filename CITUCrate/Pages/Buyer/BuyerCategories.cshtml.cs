@@ -12,19 +12,19 @@ namespace CITUCrate.Pages.Buyer
     {
         private readonly IProductService _productService;
         private readonly ILogger<BuyerCategoriesModel> _logger;
-        
+
         // Constructor
         public BuyerCategoriesModel(IProductService productService, ILogger<BuyerCategoriesModel> logger)
         {
             _productService = productService;
             _logger = logger;
         }
-        
+
         // Property to store product data
         public List<ProductDTO> Products { get; set; }
 
         public string Category { get; set; }
-        // Fetch users from the service and populate the Users property
+        // Fetch products from the service and populate the Products property
         public async Task OnGetAsync(string category)
         {
             try
