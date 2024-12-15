@@ -5,6 +5,7 @@
     ViewData["Title"] = "Homepage";
 }
 
+
 <link rel="stylesheet" href="~/css/buyerhomepage.css" />
 
 <div class="whole-body">
@@ -73,3 +74,165 @@
         </div>
     </section>
 </div>
+<link rel="stylesheet" href="~/css/buyerhomepage.css" />
+<div class="whole-body">
+
+    <section class="banner-section">
+        <img src="~/images/cratebanner1.png" class="banner" />
+    </section>
+
+    <section class="category-section">
+        <h2>Category</h2>
+        <div class="category-grid">
+            <div>
+                <a asp-page="/Buyer/BuyerCategories" asp-route-category="Writing Instruments">
+                    <img src="~/images/category-writing.jpg" alt="Writing Instruments">
+                    <p>Writing Instruments</p>
+                </a>
+            </div>
+            <div>
+                <a asp-page="/Buyer/BuyerCategories" asp-route-category="Paper Products">
+                    <img src="~/images/category-papers.jpg" alt="Paper Products">
+                    <p>Paper Products</p>
+                </a>
+            </div>
+            <div>
+                <a asp-page="/Buyer/BuyerCategories" asp-route-category="Art Supplies">
+                    <img src="~/images/category-art.jpg" alt="Art Supplies">
+                    <p>Art Supplies</p>
+                </a>
+            </div>
+            <div>
+                <a asp-page="/Buyer/BuyerCategories" asp-route-category="Organizational Supplies">
+                    <img src="~/images/category-organizational.jpg" alt="Organizational Supplies">
+                    <p>Organizational Supplies</p>
+                </a>
+            </div>
+            <div>
+                <a asp-page="/Buyer/BuyerCategories" asp-route-category="Desk Supplies">
+                    <img src="~/images/category-desk.jpeg" alt="Desk Supplies">
+                    <p>Desk Supplies</p>
+                </a>
+            </div>
+            <div>
+                <a asp-page="/Buyer/BuyerCategories" asp-route-category="Technology Accessories">
+                    <img src="~/images/category-tech.jpg" alt="Technology Accessories">
+                    <p>Technology Accessories</p>
+                </a>
+            </div>
+            <div>
+                <a asp-page="/Buyer/BuyerCategories" asp-route-category="Science Equipment">
+                    <img src="~/images/category-science.jpg" alt="Science Equipment">
+                    <p>Science Equipment</p>
+                </a>
+            </div>
+
+
+        </div>
+    </section>
+
+    <section class="popular-products-section">
+        <h2>Popular Products</h2>
+        <div class="popular-products-grid">
+            @if (Model.PopularProducts != null && Model.PopularProducts.Any())
+            {
+                <div class="product-grid" id="popular-products-grid">
+                    @foreach (var product in Model.PopularProducts)
+                    {
+                        <div class="product-item">
+                            <div class="pic-container">
+                                <img src="@product.ImageUrl" alt="@product.Name" />
+                            </div>
+                            <h3>@product.Name</h3>
+                            <p>Price: $@product.Price</p>
+                        </div>
+
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No products found.</p>
+            }
+        </div>
+    </section>
+
+    <section class="products-section">
+        <h2>All Products</h2>
+        @if (Model.Products != null && Model.Products.Any())
+        {
+            <!-- Display products by 15-->
+            <div class="product-grid" id="productGrid">
+                @foreach (var product in Model.Products.Take(15))
+                {
+                    <div class="product-item">
+                        <div class="pic-container">
+                            <img src="@product.ImageUrl" alt="@product.Name" />
+                        </div>
+                        <h3>@product.Name</h3>
+                        <p>Price: $@product.Price</p>
+                    </div>
+
+                }
+            </div>
+
+            <!-- "See More" button which increases product count by 15-->
+            <button id="seeMoreBtn">See More</button>
+        }
+        else
+        {
+            <p>No products found.</p>
+        }
+    </section>
+
+</div>
+
+@section Scripts {
+    <script>
+        // Log the raw JSON to the console to ensure the data is correctly populated
+        const products = @Html.Raw(Json.Serialize(Model.Products));
+        console.log(products);
+
+        let productCount = 15;
+        const productGrid = document.getElementById('productGrid');
+        const seeMoreBtn = document.getElementById('seeMoreBtn');
+
+        // Function to display more products when "See More" is clicked
+        seeMoreBtn.addEventListener('click', function() {
+            console.log('See More clicked');
+            productCount += 15;  // Increase product count by 15
+            renderProducts();
+        });
+
+        function renderProducts() {
+            // Clear the grid when increasing product count
+            productGrid.innerHTML = '';
+
+            for (let i = 0; i < productCount; i++) {
+                if (i >= products.length) break;
+
+                const product = products[i];
+                const productItem = document.createElement('div');
+                productItem.classList.add('product-item');
+                productItem.innerHTML = `
+                    <div class="pic-container">
+                        <img src="${product.imageUrl}" alt="${product.name}" />
+                    </div>
+                    <h3>${product.name}</h3>
+                    <p>Price: $${product.price}</p>
+                `;
+                productGrid.appendChild(productItem);
+            }
+
+            // Hide "See More" button if all products are displayed
+            if (productCount >= products.length) {
+                seeMoreBtn.style.display = 'none';
+                console.log('No more products to display, hiding the "See More" button');
+            }
+        }
+
+        // Initially render the first set of products
+        renderProducts();
+    </script>
+}
+]
