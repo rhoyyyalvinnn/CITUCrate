@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+
+    <!-- Add this to render the Styles section -->
+    @RenderSection("Styles", false)
 </head>
 <body>
     <nav class="navbar">
@@ -19,16 +22,20 @@
             </a>
         </div>
         <div class="navbar-right">
-            <a asp-page="/Buyer/">Top Up
+            <a asp-page="/Buyer/">
+                Top Up
                 <img src="~/images/card_icon.png" alt="Logo" class="navbar-logo">
             </a>
-            <a asp-page="/Buyer/">Locations
+            <a asp-page="/Buyer/">
+                Locations
                 <img src="~/images/loc.png" alt="Logo" class="navbar-logo">
             </a>
-            <a asp-page="/Buyer/MyOrder">My orders
+            <a asp-page="/Buyer/MyOrder">
+                My orders
                 <img src="~/images/cart.png" alt="Logo" class="navbar-logo">
             </a>
-            <a href="#" onclick="document.getElementById('logoutForm').submit();">Logout
+            <a href="#" onclick="document.getElementById('logoutForm').submit();">
+                Logout
                 <img src="~/images/logout.png" alt="Logo" class="navbar-logo">
             </a>
             <form id="logoutForm" method="post" asp-page="/Account/Login" asp-page-handler="Logout" style="display: none;">

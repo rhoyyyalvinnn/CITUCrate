@@ -40,7 +40,6 @@ namespace CITUCrate.Pages.Account
             // Store the UserId in the session
             _httpContextAccessor.HttpContext.Session.SetInt32("UserId", user.Id);
 
-            // Store the username in the session (this is already done in your code)
             _httpContextAccessor.HttpContext.Session.SetString("Username", user.Username);
 
             // Redirect based on user type
