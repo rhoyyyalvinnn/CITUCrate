@@ -32,12 +32,9 @@ public class OrderService : IOrderService
                 Subtotal = oi.Subtotal
             }).ToList() ?? new List<OrderItemDTO>(),
             Total = o.Total,
-            deliveryLocation = o.deliveryLocation,
             Status = o.Status
         }).ToList();
     }
-
-
 
     public async Task UpdateOrderStatusAsync(int orderId, string status)
     {

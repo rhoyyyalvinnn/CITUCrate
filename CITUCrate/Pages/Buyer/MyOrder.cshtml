@@ -1,0 +1,31 @@
+﻿@page
+@model CITUCrate.Pages.Buyer.MyOrderModel
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<h2>My Orders</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model.Orders)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.Total</td>
+                <td>@order.Status</td>
+                <td>
+                    <a href="/Buyer/PaymentPage/@order.Id" class="btn btn-primary">Buy Now</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
