@@ -1,4 +1,59 @@
-﻿@page
-@model CITUCrate.Pages.Shared._BuyerLayoutModel
-@{
-}
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - CITUCrate</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/CITUCrate.styles.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="/Buyer/BuyerHomepage">
+                <img src="~/images/citucrate_logo.png" alt="Logo" class="navbar-logo">
+            </a>
+        </div>
+        <div class="navbar-right">
+            <a asp-page="/Buyer/">Top Up
+                <img src="~/images/card_icon.png" alt="Logo" class="navbar-logo">
+            </a>
+            <a asp-page="/Buyer/">Locations
+                <img src="~/images/loc.png" alt="Logo" class="navbar-logo">
+            </a>
+            <a asp-page="/Buyer/">My orders
+                <img src="~/images/cart.png" alt="Logo" class="navbar-logo">
+            </a>
+            <a href="#" onclick="document.getElementById('logoutForm').submit();">Logout
+                <img src="~/images/logout.png" alt="Logo" class="navbar-logo">
+            </a>
+            <form id="logoutForm" method="post" asp-page="/Account/Login" asp-page-handler="Logout" style="display: none;">
+                <button type="submit" style="display: none;">Logout</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        document.querySelector('a[href="#"]').addEventListener('click', function(event) {
+            event.preventDefault();
+            document.getElementById('logoutForm').submit();
+        });
+    </script>
+</body>
+</html>

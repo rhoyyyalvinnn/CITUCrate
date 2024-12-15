@@ -1,4 +1,5 @@
-﻿using CITUCrate.Models;
+﻿using CITUCrate.DTO;
+using CITUCrate.Models;
 
 namespace CITUCrate.Repositories
 {
@@ -12,6 +13,7 @@ namespace CITUCrate.Repositories
         Task UpdateProductAsync(Product product);
         Task<bool> DeleteProductAsync(int productId);
         Task<int> GetProductIdByNameAsync(string name);
+        Task<List<Product>> GetProductsByCategoryAsync(string category);
     }
 
 }

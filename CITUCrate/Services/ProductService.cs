@@ -1,6 +1,7 @@
 ﻿using CITUCrate.DTO;
 using CITUCrate.Models;
 using CITUCrate.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace CITUCrate.Services
 {
@@ -141,6 +142,24 @@ namespace CITUCrate.Services
         {
             return await _productRepository.DeleteProductAsync(productId);
         }
+
+        //Get products based on category
+        public async Task<List<ProductDTO>> GetProductsByCategoryAsync(string category)
+        {
+            var products = await _productRepository.GetProductsByCategoryAsync(category);
+
+            return products.Select(p => new ProductDTO
+            {
+                ID = p.Id,
+                Name = p.Name,
+                Category = p.Category,
+                Price = p.Price,
+                Quantity = p.Quantity,
+                ShortDescription = p.ShortDescription,
+                ImageUrl = p.ImageUrl
+            }).ToList();
+        }
+
     }
 }
 

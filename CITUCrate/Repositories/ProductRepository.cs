@@ -63,5 +63,12 @@ namespace CITUCrate.Repositories
 
             return product.Id;
         }
+
+        public async Task<List<Product>> GetProductsByCategoryAsync(string category)
+        {
+            return await _context.Products
+                .Where(p => p.Category == category)
+                .ToListAsync();
+        }
     }
 }

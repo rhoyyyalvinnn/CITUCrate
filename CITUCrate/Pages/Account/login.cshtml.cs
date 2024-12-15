@@ -42,7 +42,7 @@ namespace CITUCrate.Pages.Account
 
             if (user.isBuyer == 1)
             {
-                return RedirectToPage("/aboutus");
+                return RedirectToPage("/Buyer/BuyerHomepage");
             }
             else
             {
