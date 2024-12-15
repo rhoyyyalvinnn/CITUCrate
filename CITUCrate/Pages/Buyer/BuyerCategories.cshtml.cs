@@ -24,7 +24,7 @@ namespace CITUCrate.Pages.Buyer
         public List<ProductDTO> Products { get; set; }
 
         public string Category { get; set; }
-        // Fetch users from the service and populate the Users property
+        // Fetch products from the service and populate the Products property
         public async Task OnGetAsync(string category)
         {
             try

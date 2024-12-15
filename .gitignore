@@ -361,3 +361,7 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/CITUCrate/wwwroot/images/productimages
+/CITUCrate/wwwroot/images/card icon.png
+/CITUCrate/Services/IProductService.cs
+/CITUCrate/Services/IProductService.cs
