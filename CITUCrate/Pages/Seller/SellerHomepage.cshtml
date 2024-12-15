@@ -76,11 +76,6 @@
                                         '@product.ImageUrl')">
                                         Edit
                                     </button>
-
-                                    <form method="post" asp-page-handler="Delete" style="display: inline;" onsubmit="return confirmDelete()">
-                                        <input type="hidden" name="productId" value="@product.ID" />
-                                        <button type="submit" class="btn btn-danger">Delete</button>
-                                    </form>
                                 </td>
                             </tr>
                         }

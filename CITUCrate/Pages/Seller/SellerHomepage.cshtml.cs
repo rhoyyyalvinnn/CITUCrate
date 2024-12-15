@@ -107,6 +107,5 @@ namespace CITUCrate.Pages.Seller
 
             return RedirectToPage();
         }
-        
     }
 }
