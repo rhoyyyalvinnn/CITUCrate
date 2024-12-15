@@ -1,4 +1,70 @@
 ﻿@page
 @model CITUCrate.Pages.Buyer.buyerhomepageModel
 @{
+	Layout = "_BuyerLayout";
+    ViewData["Title"] = "Homepage";
 }
+    <link rel="stylesheet" href="~/css/buyerhomepage.css" />
+    <div class="whole-body">
+
+        <section class="banner-section">
+            <img src="~/images/cratebanner1.png" class="banner"/>
+        </section>
+
+        <section class="category-section">
+            <h2>Category</h2>
+            <div class="category-grid">
+                <div>
+                    <a asp-page="/Buyer/BuyerCategories" asp-route-category="Writing Instruments">
+                        <img src="~/images/category-writing.jpg" alt="Writing Instruments">
+                        <p>Writing Instruments</p>
+                    </a>
+                </div>
+                <div>
+                    <a asp-page="/Buyer/BuyerCategories" asp-route-category="Paper Products">
+                    <img src="~/images/category-papers.jpg" alt="Paper Products">
+                    <p>Paper Products</p>
+                    </a>
+                </div>
+                <div>
+                    <a asp-page="/Buyer/BuyerCategories" asp-route-category="Art Supplies">
+                        <img src="~/images/category-art.jpg" alt="Art Supplies">
+                        <p>Art Supplies</p>
+                    </a>
+                </div>
+                <div>
+                    <a asp-page="/Buyer/BuyerCategories" asp-route-category="Organizational Supplies">
+                        <img src="~/images/category-organizational.jpg" alt="Organizational Supplies">
+                        <p>Organizational Supplies</p>
+                    </a>
+                </div>
+                <div>
+                    <a asp-page="/Buyer/BuyerCategories" asp-route-category="Desk Supplies">
+                        <img src="~/images/category-desk.jpeg" alt="Desk Supplies">
+                        <p>Desk Supplies</p>
+                    </a>
+                </div>
+                <div>
+                    <a asp-page="/Buyer/BuyerCategories" asp-route-category="Technology Accessories">
+                        <img src="~/images/category-tech.jpg" alt="Technology Accessories">
+                        <p>Technology Accessories</p>
+                    </a>
+                </div>
+                <div>
+                    <a asp-page="/Buyer/BuyerCategories" asp-route-category="Science Equipment">
+                        <img src="~/images/category-science.jpg" alt="Science Equipment">
+                        <p>Science Equipment</p>
+                    </a>
+                </div>
+
+
+            </div>
+        </section>
+
+        <section class="new-products-section">
+            <h2>Popular Products</h2>
+            <div class="new-products-grid">
+                
+            </div>
+        </section>
+    </div>

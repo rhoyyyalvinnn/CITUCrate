@@ -1,0 +1,87 @@
+﻿@page "{category?}"
+@model CITUCrate.Pages.Buyer.BuyerCategoriesModel
+@{
+    Layout = "_BuyerLayout";
+    ViewData["Title"] = Model.Category ?? "All Categories";
+}
+<link rel="stylesheet" href="~/css/buyercategories.css" />
+<section class="banner-section">
+    <img src="~/images/cratebanner1.png" class="banner" />
+</section>
+
+<section class="product-section">
+    <h1>@Model.Category</h1>
+
+    @if (Model.Products != null && Model.Products.Any())
+    {
+        <!-- Display products by 15-->
+        <div class="product-grid" id="productGrid">
+            @foreach (var product in Model.Products.Take(15))  
+            {
+                <div class="product-item">
+                    <div class="pic-container">
+                        <img src="@product.ImageUrl" alt="@product.Name" />
+                    </div>
+                    <h3>@product.Name</h3>
+                    <p>Price: $@product.Price</p>
+                </div>
+    
+            }
+        </div>
+    
+        <!-- "See More" button which increases product count by 15-->
+        <button id="seeMoreBtn">See More</button>
+    }
+    else
+    {
+        <p>No products found in this category.</p>
+    }
+</section>
+@section Scripts {
+    <script>
+        // Log the raw JSON to the console to ensure the data is correctly populated
+        const products = @Html.Raw(Json.Serialize(Model.Products));
+        console.log(products);
+
+        let productCount = 15;
+        const productGrid = document.getElementById('productGrid');
+        const seeMoreBtn = document.getElementById('seeMoreBtn');
+
+        // Function to display more products when "See More" is clicked
+        seeMoreBtn.addEventListener('click', function() {
+            console.log('See More clicked');
+            productCount += 15;  // Increase product count by 15
+            renderProducts();
+        });
+
+        function renderProducts() {
+            // Clear the grid when increasing product count
+            productGrid.innerHTML = '';
+
+            for (let i = 0; i < productCount; i++) {
+                if (i >= products.length) break;
+
+                const product = products[i];
+                const productItem = document.createElement('div');
+                productItem.classList.add('product-item');
+                productItem.innerHTML = `
+                    <div class="pic-container">
+                        <img src="${product.imageUrl}" alt="${product.name}" />
+                    </div>
+                    <h3>${product.name}</h3>
+                    <p>Price: $${product.price}</p>
+                `;
+                productGrid.appendChild(productItem);
+            }
+
+            // Hide "See More" button if all products are displayed
+            if (productCount >= products.length) {
+                seeMoreBtn.style.display = 'none';
+                console.log('No more products to display, hiding the "See More" button');
+            }
+        }
+
+        // Initially render the first set of products
+        renderProducts();
+    </script>
+}

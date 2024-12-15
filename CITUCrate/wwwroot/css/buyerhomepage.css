@@ -1,0 +1,100 @@
+﻿body {
+    font-family: 'Jersey 10', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+h1, h2, h3 {
+    color: #401D1D;
+    margin-bottom: 10px;
+}
+
+/* Category Section */
+.category-section {
+    text-align: center;
+    margin-top: 20vh;
+}
+
+    .category-section h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+/* Category Grid and New Products Grid Image */
+.category-grid, .new-products-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Keep 5 equal columns */
+    gap: 15px;
+    justify-content: center;
+}
+
+    .category-grid img, .new-products-grid img {
+        width: 100%;
+        height: 200px; /* Set a fixed height for uniformity */
+        object-fit: cover; /* Ensures the image covers the area without distorting */
+        border-radius: 8px;
+        transition: transform 0.2s ease;
+    }
+
+        /* Hover Effect */
+        .category-grid img:hover, .new-products-grid img:hover {
+            transform: scale(1.1);
+        }
+
+ .category-grid p, .new-products-grid p {
+     margin: 5px 0 0;
+     font-size: 14px;
+     font-weight: 500;
+ }
+
+/* New Products Section */
+.new-products-section {
+    text-align: center;
+    margin-top: 40px;
+}
+
+    .new-products-section h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+.new-products-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    justify-content: center;
+}
+
+    .new-products-grid img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        transition: transform 0.2s ease;
+    }
+
+        .new-products-grid img:hover {
+            transform: scale(1.1);
+        }
+
+.banner-section {
+    display: flex; /* Enable Flexbox */
+    justify-content: center; /* Horizontally center the image */
+    align-items: center; /* Vertically center the image */
+    width: 100%; /* Make sure the section takes the full width */
+    height: 35vh; /* Optional: Make the section take full viewport height */
+    margin-top: 20vh;
+}
+
+.banner {
+    width: 100%;
+    height: auto;
+}
+
+a {
+    
+    text-decoration: none;
+    color: black;
+}
