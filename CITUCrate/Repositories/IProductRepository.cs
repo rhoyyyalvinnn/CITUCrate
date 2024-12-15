@@ -11,8 +11,7 @@ namespace CITUCrate.Repositories
 
         Task<Product> GetProductByIdAsync(int id);
         Task UpdateProductAsync(Product product);
-        Task DeleteProductAsync(int id);
-
+        Task<bool> DeleteProductAsync(int productId);
         Task<int> GetProductIdByNameAsync(string name);
         Task<List<Product>> GetProductsByCategoryAsync(string category);
     }

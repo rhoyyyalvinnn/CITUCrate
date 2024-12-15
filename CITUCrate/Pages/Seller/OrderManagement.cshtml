@@ -12,124 +12,151 @@
     <title>Order Management</title>
     <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/ordermanagement.css" />
+    <style>
+        .pending {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow */
+            padding: 20px; /* Adds spacing inside the div */
+            background-color: #fff; /* Ensures the div has a white background */
+            border-radius: 8px; /* Adds rounded corners */
+            margin: 20px auto; /* Centers the div and adds vertical spacing */
+            max-width: 90%; /* Ensures the div doesn't stretch too wide */
+        }
+
+        .completed{
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a shadow */
+            padding: 20px; /* Adds spacing inside the div */
+            background-color: #fff; /* Ensures the div has a white background */
+            border-radius: 8px; /* Adds rounded corners */
+            margin: 20px auto; /* Centers the div and adds vertical spacing */
+            max-width: 90%; /* Ensures the div doesn't stretch too wide */
+        }
+    </style>
 </head>
 <body>
-
-    <h2>Order Management</h2>
-
-    <h3>Pending Orders</h3>
-    @if (Model.PendingOrders == null || !Model.PendingOrders.Any())
-    {
-        <p>No pending orders available yet.</p>
-    }
-    else
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>User</th>
-                    <th>Product(s)</th>
-                    <th>Total Amount</th>
-                    <th>Status</th>
-                    <th>Update</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var order in Model.PendingOrders)
-                {
+    <div class="pending">
+        <h2>Order Management</h2>
+        <h3>Pending Orders</h3>
+        @if (Model.PendingOrders == null || !Model.PendingOrders.Any())
+        {
+            <p>No pending orders available yet.</p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
                     <tr>
-                        <td data-label="Order ID">@order.Id</td>
-                        <td data-label="User">@order.User?.Username</td>
-                        <td data-label="Product(s)">
-                            @if (order.OrderItems != null && order.OrderItems.Any())
-                            {
-                                <ul>
-                                    @foreach (var orderItem in order.OrderItems)
-                                    {
-                                        <li>
-                                            @orderItem.Product?.Name -
-                                            Quantity: @orderItem.Quantity -
-                                            Subtotal: @orderItem.Subtotal.ToString("C")
-                                        </li>
-                                    }
-                                </ul>
-                            }
-                            else
-                            {
-                                <p>No items in this order.</p>
-                            }
-                        </td>
-                        <td data-label="Total Amount">@order.Total.ToString("C")</td>
-                        <td data-label="Status" style="display: flex; align-items: center; gap: 10px;">
-                            <form method="post">
-                                <input type="hidden" name="orderId" value="@order.Id" />
-                                <select name="orderStatus" class="form-control">
-                                    <option value="Pending" selected="@(order.Status == "Pending")">Pending</option>
-                                    <option value="Completed" selected="@(order.Status == "Completed")">Completed</option>
-                                </select>
-                        <td data-label="Update">
-                            <button type="submit" class="btn btn-primary">Update</button>
-                        </td>
-                        </form>
-                        </td>
+                        <th>Order ID</th>
+                        <th>User</th>
+                        <th>Product(s)</th>
+                        <th>Total Amount</th>
+                        <th>Delivery Location</th>
+                        <th>Status</th>
+                        <th>Update</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    }
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.PendingOrders)
+                    {
+                        <tr>
+                            <td data-label="Order ID">@order.Id</td>
+                            <td data-label="User">@order.User?.Username</td>
+                            <td data-label="Product(s)">
+                                @if (order.OrderItems != null && order.OrderItems.Any())
+                                {
+                                    <ul>
+                                        @foreach (var orderItem in order.OrderItems)
+                                        {
+                                            <li>
+                                                @orderItem.Product?.Name -
+                                                Quantity: @orderItem.Quantity -
+                                                Subtotal: @orderItem.Subtotal.ToString("C")
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p>No items in this order.</p>
+                                }
+                            </td>
+                            <td data-label="Total Amount">@order.Total.ToString("C")</td>
+                            <td data-label="Delivery Location">@order.deliveryLocation</td>
+                            <td data-label="Status">
+                                <form method="post">
+                                    <input type="hidden" name="orderId" value="@order.Id" />
+                                    <select name="orderStatus" class="form-control">
+                                        <option value="Pending" selected="@(order.Status == "Pending")">Pending</option>
+                                        <option value="Completed" selected="@(order.Status == "Completed")">Completed</option>
+                                    </select>
+                            <td data-label="Update">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </td>
+                            </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
 
     <!-- Completed Orders Table -->
-    <h3>Completed Orders</h3>
-    @if (Model.CompletedOrders == null || !Model.CompletedOrders.Any())
-    {
-        <p>No completed orders available yet.</p>
-    }
-    else
-    {
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Order ID</th>
-                    <th>User</th>
-                    <th>Product(s)</th>
-                    <th>Total Amount</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var order in Model.CompletedOrders)
-                {
+    <div class="completed">
+        <h3>Completed Orders</h3>
+        @if (Model.CompletedOrders == null || !Model.CompletedOrders.Any())
+        {
+            <p>No completed orders available yet.</p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
                     <tr>
-                        <td data-label="Order ID">@order.Id</td>
-                        <td data-label="User">@order.User?.Username</td>
-                        <td data-label="Product(s)">
-                            @if (order.OrderItems != null && order.OrderItems.Any())
-                            {
-                                <ul>
-                                    @foreach (var orderItem in order.OrderItems)
-                                    {
-                                        <li>
-                                            @orderItem.Product?.Name -
-                                            Quantity: @orderItem.Quantity -
-                                            Subtotal: @orderItem.Subtotal.ToString("C")
-                                        </li>
-                                    }
-                                </ul>
-                            }
-                            else
-                            {
-                                <p>No items in this order.</p>
-                            }
-                        </td>
-
-                        <td data-label="Total Amount">@order.Total.ToString("C")</td>
-                        <td data-label="Status">Completed</td>
+                        <th>Order ID</th>
+                        <th>User</th>
+                        <th>Product(s)</th>
+                        <th>Total Amount</th>
+                        <th>Delivery Location</th>
+                        <th>Status</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    }
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.CompletedOrders)
+                    {
+                        <tr>
+                            <td data-label="Order ID">@order.Id</td>
+                            <td data-label="User">@order.User?.Username</td>
+                            <td data-label="Product(s)">
+                                @if (order.OrderItems != null && order.OrderItems.Any())
+                                {
+                                    <ul>
+                                        @foreach (var orderItem in order.OrderItems)
+                                        {
+                                            <li>
+                                                @orderItem.Product?.Name -
+                                                Quantity: @orderItem.Quantity -
+                                                Subtotal: @orderItem.Subtotal.ToString("C")
+                                            </li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p>No items in this order.</p>
+                                }
+                            </td>
+
+                            <td data-label="Total Amount">@order.Total.ToString("C")</td>
+                            <td data-label="Delivery Location">@order.deliveryLocation</td>
+                            <td data-label="Status">Completed</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+
 
     <script>
         document.querySelector("form").addEventListener("submit", function() {

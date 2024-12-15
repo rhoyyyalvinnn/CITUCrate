@@ -27,6 +27,7 @@ namespace CITUCrate.Services
                 Quantity = p.Quantity,
                 ShortDescription = p.ShortDescription,
                 ImageUrl = p.ImageUrl,
+                TotalSales = p.TotalSales,
             }).ToList();
         }
 
@@ -64,7 +65,8 @@ namespace CITUCrate.Services
                 Price = addProductDto.Price,
                 Quantity = addProductDto.Quantity,
                 ShortDescription = addProductDto.ShortDescription,
-                ImageUrl = imageUrl
+                ImageUrl = imageUrl,
+                TotalSales = 0
             };
 
             await _productRepository.AddProductAsync(newProduct);
@@ -86,6 +88,7 @@ namespace CITUCrate.Services
                 Quantity = product.Quantity,
                 ShortDescription = product.ShortDescription,
                 ImageUrl = product.ImageUrl,
+                TotalSales = product.TotalSales,
             };
 
             return productDto;
@@ -135,9 +138,9 @@ namespace CITUCrate.Services
         }
 
         // Delete a product
-        public async Task DeleteProductAsync(int id)
+        public async Task<bool> DeleteProductAsync(int productId)
         {
-            await _productRepository.DeleteProductAsync(id);
+            return await _productRepository.DeleteProductAsync(productId);
         }
 
         //Get products based on category

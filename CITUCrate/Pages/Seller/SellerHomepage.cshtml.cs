@@ -55,6 +55,7 @@ namespace CITUCrate.Pages.Seller
             ViewData["CategorySortParm"] = sortOrder == "Category" ? "category_desc" : "Category";
             ViewData["PriceSortParm"] = sortOrder == "Price" ? "price_desc" : "Price";
             ViewData["QuantitySortParm"] = sortOrder == "Quantity" ? "quantity_desc" : "Quantity";
+            ViewData["TotalSalesSortParm"] = sortOrder == "TotalSales" ? "totalsales_desc" : "TotalSales";
 
             return sortOrder switch
             {
@@ -65,9 +66,12 @@ namespace CITUCrate.Pages.Seller
                 "price_desc" => products.OrderByDescending(p => p.Price).ToList(),
                 "Quantity" => products.OrderBy(p => p.Quantity).ToList(),
                 "quantity_desc" => products.OrderByDescending(p => p.Quantity).ToList(),
+                "TotalSales" => products.OrderBy(p => p.TotalSales).ToList(),
+                "totalsales_desc" => products.OrderByDescending(p => p.TotalSales).ToList(),
                 _ => products.OrderBy(p => p.Name).ToList(),
             };
         }
+
         public async Task<IActionResult> OnPostUpdateAsync(int productID, IFormCollection form, IFormFile imageFile)
         {
             if (productID == 0)
@@ -103,6 +107,64 @@ namespace CITUCrate.Pages.Seller
 
             return RedirectToPage();
         }
+        public async Task<IActionResult> OnPostDeleteAsync(int productId)
+        {
+            if (productId == 0)
+            {
+                _logger.LogWarning("Invalid product ID for deletion.");
+                return NotFound();
+            }
 
+            _logger.LogInformation("Deleting product with ID: {ProductId}", productId);
+
+            // Retrieve the product from the database
+            var product = await _productService.GetProductByIdAsync(productId);
+
+            if (product == null)
+            {
+                _logger.LogWarning("Product with ID {ProductId} not found.", productId);
+                return NotFound();
+            }
+
+            // Get the image path from the product object (assuming ImageUrl stores the file path)
+            string imagePath = product.ImageUrl;
+
+            // Attempt to delete the product
+            var success = await _productService.DeleteProductAsync(productId);
+
+            if (!success)
+            {
+                _logger.LogWarning("Product with ID {ProductId} could not be deleted.", productId);
+                return NotFound();
+            }
+
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                // Combine the root directory (wwwroot) with the relative image path stored in the database
+                string fullImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", imagePath.TrimStart('/'));
+
+                // Check if the file exists and delete it
+                if (System.IO.File.Exists(fullImagePath))
+                {
+                    try
+                    {
+                        System.IO.File.Delete(fullImagePath);
+                        _logger.LogInformation("Image for product with ID {ProductId} deleted successfully.", productId);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError("Error deleting image for product with ID {ProductId}: {ErrorMessage}", productId, ex.Message);
+                    }
+                }
+                else
+                {
+                    _logger.LogWarning("Image file for product with ID {ProductId} not found at {ImagePath}.", productId, fullImagePath);
+                }
+            }
+
+
+            _logger.LogInformation("Product with ID {ProductId} deleted successfully.", productId);
+            return RedirectToPage();
+        }
     }
 }

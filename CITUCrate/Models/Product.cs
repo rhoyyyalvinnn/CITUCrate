@@ -28,5 +28,8 @@ namespace CITUCrate.Models
 
         [StringLength(500)]
         public string ShortDescription { get; set; }
+
+        [Required]
+        public int TotalSales { get; set; }
     }
 }

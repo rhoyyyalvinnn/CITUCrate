@@ -17,12 +17,11 @@
             <a href="/Seller/SellerHomepage">
                 <img src="~/images/citucrate_logo.png" alt="Logo" class="navbar-logo">
             </a>
-            <a asp-page="/SellerHomepage">Dashboard</a>
-            <a asp-page="/Seller/ProductManagement">Manage Products</a>
+            <a asp-page="/Seller/SellerHomepage">Dashboard</a>
             <a asp-page="/Seller/OrderManagement">View Orders</a>
+            <a asp-page="/Seller/AccountManagement">Accounts</a>
         </div>
         <div class="navbar-right">
-            <a asp-page="/Seller/AccountManagement">Account Management</a>
             <a href="#" onclick="document.getElementById('logoutForm').submit();">Logout</a>
             <form id="logoutForm" method="post" asp-page="/Account/Login" asp-page-handler="Logout" style="display: none;">
                 <button type="submit" style="display: none;">Logout</button>
