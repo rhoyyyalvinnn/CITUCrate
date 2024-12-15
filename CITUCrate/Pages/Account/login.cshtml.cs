@@ -37,9 +37,13 @@ namespace CITUCrate.Pages.Account
                 return Page();
             }
 
-            // Store username in the session
+            // Store the UserId in the session
+            _httpContextAccessor.HttpContext.Session.SetInt32("UserId", user.Id);
+
+            // Store the username in the session (this is already done in your code)
             _httpContextAccessor.HttpContext.Session.SetString("Username", user.Username);
 
+            // Redirect based on user type
             if (user.isBuyer == 1)
             {
                 return RedirectToPage("/Buyer/BuyerHomepage");
@@ -49,5 +53,6 @@ namespace CITUCrate.Pages.Account
                 return RedirectToPage("/Seller/SellerHomepage");
             }
         }
+
     }
 }
