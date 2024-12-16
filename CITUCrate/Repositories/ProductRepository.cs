@@ -65,3 +65,35 @@ namespace CITUCrate.Repositories
         }
     }
 }
+
+
+
+nn = new NeuralNet(2, 2, 1);
+
+for (int x = 0; x < 100; x++)
+{
+    nn.setInputs(0, 0.0);
+    nn.setInputs(1, 0.0);
+    nn.setDesiredOutput(0, 0.0);
+    nn.learn();
+
+    nn.setInputs(0, 0.0);
+    nn.setInputs(1, 1.0);
+    nn.setDesiredOutput(0, 1.0);
+    nn.learn();
+
+    nn.setInputs(0, 1.0);
+    nn.setInputs(1, 0.0);
+    nn.setDesiredOutput(0, 1.0);
+    nn.learn();
+
+    nn.setInputs(0, 1.0);
+    nn.setInputs(1, 1.0);
+    nn.setDesiredOutput(0, 1.0);
+    nn.learn();
+}
+
+nn.setInputs(0, Convert.ToDouble(textbox1.Text));
+nn.setInputs(1, Convert.ToDouble(textbox2.Text));
+nn.run();
+textbox3.Text = "" + nn.getOutputData(0);
