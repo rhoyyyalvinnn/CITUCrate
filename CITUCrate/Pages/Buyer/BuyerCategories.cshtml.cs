@@ -16,18 +16,20 @@ namespace CITUCrate.Pages.Buyer
         private readonly IOrdersRepository _ordersRepository;
 
         public BuyerCategoriesModel(IProductService productService, ILogger<BuyerCategoriesModel> logger, IOrdersRepository ordersRepository)
+
+        // Constructor
+        public BuyerCategoriesModel(IProductService productService, ILogger<BuyerCategoriesModel> logger)
         {
             _productService = productService;
             _logger = logger;
             _ordersRepository = ordersRepository;
         }
 
-
         // Property to store product data
         public List<ProductDTO> Products { get; set; }
 
         public string Category { get; set; }
-        // Fetch users from the service and populate the Users property
+        // Fetch products from the service and populate the Products property
         public async Task OnGetAsync(string category)
         {
             try
