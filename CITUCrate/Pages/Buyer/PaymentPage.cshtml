@@ -1,0 +1,44 @@
+﻿@page "{id:int}"
+@model CITUCrate.Pages.Buyer.PaymentPageModel
+@{
+    ViewData["Title"] = "Payment Page";
+}
+
+<h2>Order Summary</h2>
+
+<p><strong>Order ID:</strong> @Model.Order.Id</p>
+<p><strong>Total:</strong> @Model.Order.Total</p>
+<p><strong>Status:</strong> @Model.Order.Status</p>
+
+<form method="post">
+    <button type="submit" class="btn btn-success">Checkout</button>
+</form>
+
+<!-- Custom Notification -->
+<div id="paymentSuccessNotification" class="notification">
+    Payment Successful!
+    <button id="closeNotification" class="btn btn-sm btn-primary">OK</button>
+</div>
+
+<!-- JavaScript to Show Notification -->
+@section Scripts {
+    <script>
+        document.querySelector('form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form submission
+
+            // Show the notification box after clicking checkout
+            document.getElementById('paymentSuccessNotification').style.display = 'block';
+
+            // Wait 3 seconds and then redirect to homepage
+            setTimeout(function () {
+                window.location.href = '/Buyer/buyerhomepage';
+            }, 3000);
+        });
+
+        // Close notification when OK button is clicked
+        document.getElementById('closeNotification').addEventListener('click', function () {
+            document.getElementById('paymentSuccessNotification').style.display = 'none';
+            window.location.href = '/Buyer/buyerhomepage';
+        });
+    </script>
+}
