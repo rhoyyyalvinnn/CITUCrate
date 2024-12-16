@@ -8,4 +8,5 @@ public class Order
     public virtual ICollection<OrderItem> OrderItems { get; set; }
     public decimal Total { get; set; }
     public string Status { get; set; } = "Pending";
+    public string deliveryLocation { get; set; }
 }
