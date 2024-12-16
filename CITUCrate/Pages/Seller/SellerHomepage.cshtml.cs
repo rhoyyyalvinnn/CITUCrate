@@ -93,11 +93,11 @@ namespace CITUCrate.Pages.Seller
                 Name = form["Name"],
                 Category = form["Category"],
                 Price = decimal.TryParse(form["Price"], out var price) ? price : 0m,
-                Quantity = int.TryParse(form["Quantity"], out var quantity) ? quantity : 0, 
-                ShortDescription = form["ShortDescription"] 
+                Quantity = int.TryParse(form["Quantity"], out var quantity) ? quantity : 0,
+                ShortDescription = form["ShortDescription"]
             };
 
-            var success = await _productService.UpdateProductAsync(productID, updateProductDTO, imageFile); 
+            var success = await _productService.UpdateProductAsync(productID, updateProductDTO, imageFile);
 
             if (!success)
             {

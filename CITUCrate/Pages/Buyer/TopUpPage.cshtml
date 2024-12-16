@@ -1,0 +1,74 @@
+﻿@page
+@model CITUCrate.Pages.Buyer.TopUpPageModel
+
+@{
+    Layout = "_BuyerLayout";
+    ViewData["Title"] = "Top Up";
+}
+<link rel="stylesheet" href="~/css/topup.css" />
+
+<div class="container">
+    <h2>Top Up</h2>
+
+    <p>Current Balance: <strong>@Model.CurrentBalance</strong></p>
+
+    <form method="post" id="topUpForm">
+
+
+        <div class="payment-options">
+            <label>
+                <input type="radio" name="paymentMethod" value="Visa" />
+                <img src="~/images/visa.jpg" alt="Visa" width="30" /> Visa
+            </label>
+            <label>
+                <input type="radio" name="paymentMethod" value="MasterCard" />
+                <img src="~/images/mastercard.jpg" alt="MasterCard" width="30" /> MasterCard
+            </label>
+            <label>
+                <input type="radio" name="paymentMethod" value="PayPal" />
+                <img src="~/images/paypal.png" alt="PayPal" width="30" /> PayPal
+            </label>
+            <label>
+                <input type="radio" name="paymentMethod" value="GCash" />
+                <img src="~/images/gcash.jpeg" alt="GCash" width="30" /> GCash
+            </label>
+        </div>
+
+        <div class="form-group">
+            <input placeholder="Enter Amount" type="number" class="form-control" id="Amount" name="TopUp.Amount" value="@Model.TopUp?.Amount" required />
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Top Up</button>
+    </form>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success mt-3">
+            @TempData["Message"]
+        </div>
+    }
+</div>
+
+<!-- JavaScript Validation -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const topUpForm = document.getElementById("topUpForm");
+
+        // Ensure the form element exists before attaching the event listener
+        if (topUpForm) {
+            topUpForm.addEventListener("submit", function(event) {
+                // Check if any payment method is selected
+                const paymentMethodSelected = document.querySelector('input[name="paymentMethod"]:checked');
+                if (!paymentMethodSelected) {
+                    // Prevent form submission
+                    event.preventDefault();
+
+                    // Show alert
+                    alert("Please select a payment method before proceeding.");
+                }
+            });
+        }
+    });
+</script>
+
