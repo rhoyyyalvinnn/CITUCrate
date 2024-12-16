@@ -37,5 +37,11 @@ public class OrderRepository : IOrdersRepository
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task CreateOrderAsync(Order order)
+    {
+        _context.Orders.Add(order);
+        await _context.SaveChangesAsync();
+    }
 }
 

@@ -5,6 +5,51 @@
     ViewData["Title"] = Model.Category ?? "All Categories";
 }
 <link rel="stylesheet" href="~/css/buyercategories.css" />
+<style>
+    .modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+    }
+
+    .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    }
+
+    .quantity-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0;
+    }
+</style>
 <section class="banner-section">
     <img src="~/images/cratebanner1.png" class="banner" />
 </section>
@@ -14,22 +59,20 @@
 
     @if (Model.Products != null && Model.Products.Any())
     {
-        <!-- Display products by 15-->
         <div class="product-grid" id="productGrid">
-            @foreach (var product in Model.Products.Take(15))  
+            @foreach (var product in Model.Products.Take(15))
             {
-                <div class="product-item">
+                <div class="product-item" data-id="@product.ID" data-name="@product.Name"
+                     data-price="@product.Price" data-description="@product.ShortDescription"
+                     data-image="@product.ImageUrl">
                     <div class="pic-container">
                         <img src="@product.ImageUrl" alt="@product.Name" />
                     </div>
                     <h3>@product.Name</h3>
                     <p>Price: $@product.Price</p>
                 </div>
-    
             }
         </div>
-    
-        <!-- "See More" button which increases product count by 15-->
         <button id="seeMoreBtn">See More</button>
     }
     else
@@ -37,51 +80,81 @@
         <p>No products found in this category.</p>
     }
 </section>
+
+<!-- Modal -->
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <img id="modalImage" src="" alt="" />
+        <h3 id="modalName"></h3>
+        <p id="modalDescription"></p>
+        <p>Price: $<span id="modalPrice"></span></p>
+        <form id="addToCartForm" method="post" asp-page-handler="AddToCart">
+            <input type="hidden" id="productId" name="ProductId" />
+            <div class="quantity-selector">
+                <button type="button" id="decreaseQty">-</button>
+                <input id="quantity" type="number" value="1" min="1" name="Quantity" />
+                <button type="button" id="increaseQty">+</button>
+            </div>
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+</div>
+
+
 @section Scripts {
     <script>
-        // Log the raw JSON to the console to ensure the data is correctly populated
-        const products = @Html.Raw(Json.Serialize(Model.Products));
-        console.log(products);
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const form = document.getElementById('addToCartForm');
+        const quantityInput = document.getElementById('quantity');
+        const decreaseQty = document.getElementById('decreaseQty');
+        const increaseQty = document.getElementById('increaseQty');
+        const modal = document.getElementById('productModal'); // Define modal here
+        const closeModal = document.querySelector('.close'); // Get the close button
 
-        let productCount = 15;
+        let selectedProduct = null;
+
         const productGrid = document.getElementById('productGrid');
-        const seeMoreBtn = document.getElementById('seeMoreBtn');
 
-        // Function to display more products when "See More" is clicked
-        seeMoreBtn.addEventListener('click', function() {
-            console.log('See More clicked');
-            productCount += 15;  // Increase product count by 15
-            renderProducts();
+        productGrid.addEventListener('click', function (e) {
+            const productItem = e.target.closest('.product-item');
+            if (!productItem) return;
+
+            selectedProduct = {
+                id: productItem.dataset.id,
+                name: productItem.dataset.name,
+                price: productItem.dataset.price,
+                description: productItem.dataset.description,
+                imageUrl: productItem.dataset.image
+            };
+
+            document.getElementById('modalImage').src = selectedProduct.imageUrl;
+            document.getElementById('modalName').textContent = selectedProduct.name;
+            document.getElementById('modalDescription').textContent = selectedProduct.description;
+            document.getElementById('modalPrice').textContent = selectedProduct.price;
+            quantityInput.value = 1;
+            document.getElementById('productId').value = selectedProduct.id;  // Set product ID
+
+            modal.style.display = 'block'; // Show the modal
         });
 
-        function renderProducts() {
-            // Clear the grid when increasing product count
-            productGrid.innerHTML = '';
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none'; // Hide the modal when close is clicked
+        });
 
-            for (let i = 0; i < productCount; i++) {
-                if (i >= products.length) break;
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) modal.style.display = 'none'; // Hide the modal if clicked outside
+        });
 
-                const product = products[i];
-                const productItem = document.createElement('div');
-                productItem.classList.add('product-item');
-                productItem.innerHTML = `
-                    <div class="pic-container">
-                        <img src="${product.imageUrl}" alt="${product.name}" />
-                    </div>
-                    <h3>${product.name}</h3>
-                    <p>Price: $${product.price}</p>
-                `;
-                productGrid.appendChild(productItem);
-            }
+        decreaseQty.addEventListener('click', () => {
+            const qty = parseInt(quantityInput.value);
+            if (qty > 1) quantityInput.value = qty - 1; // Decrease the quantity
+        });
 
-            // Hide "See More" button if all products are displayed
-            if (productCount >= products.length) {
-                seeMoreBtn.style.display = 'none';
-                console.log('No more products to display, hiding the "See More" button');
-            }
-        }
+        increaseQty.addEventListener('click', () => {
+            quantityInput.value = parseInt(quantityInput.value) + 1; // Increase the quantity
+        });
 
-        // Initially render the first set of products
-        renderProducts();
+
     </script>
 }

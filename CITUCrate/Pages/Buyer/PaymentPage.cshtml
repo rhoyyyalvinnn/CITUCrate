@@ -4,6 +4,36 @@
     ViewData["Title"] = "Payment Page";
 }
 
+<style>
+    .notification {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* Centering the box */
+        padding: 15px;
+        background-color: #4CAF50;
+        color: white;
+        font-size: 16px;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+    }
+
+        .notification button {
+            margin-left: 15px;
+            background-color: #fff;
+            color: #4CAF50;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+            .notification button:hover {
+                background-color: #ddd;
+            }
+</style>
+
 <h2>Order Summary</h2>
 
 <p><strong>Order ID:</strong> @Model.Order.Id</p>
