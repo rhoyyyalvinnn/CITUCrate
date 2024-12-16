@@ -82,79 +82,107 @@
 </section>
 
 <!-- Modal -->
-<div id="productModal" class="modal">
+<div id="product-modal" class="modal">
     <div class="modal-content">
-        <span class="close">&times;</span>
-        <img id="modalImage" src="" alt="" />
-        <h3 id="modalName"></h3>
-        <p id="modalDescription"></p>
-        <p>Price: $<span id="modalPrice"></span></p>
-        <form id="addToCartForm" method="post" asp-page-handler="AddToCart">
-            <input type="hidden" id="productId" name="ProductId" />
-            <div class="quantity-selector">
-                <button type="button" id="decreaseQty">-</button>
-                <input id="quantity" type="number" value="1" min="1" name="Quantity" />
-                <button type="button" id="increaseQty">+</button>
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-body">
+            <img id="modal-image" src="" alt="Product Image">
+            <h3 id="modal-name"></h3>
+            <p id="modal-price"></p>
+            <p id="modal-description"></p>
+            <div class="quantity-controls">
+                <button onclick="decreaseQuantity()">-</button>
+                <span id="quantity">1</span>
+                <button onclick="increaseQuantity()">+</button>
             </div>
-            <button type="submit">Add to Cart</button>
-        </form>
+            <label for="delivery-location">Location to deliver:</label>
+            <input type="text" id="delivery-location" name="deliveryLocation" placeholder="Enter delivery location">
+            <form id="add-to-cart-form" method="post" asp-page="/Buyer/BuyerCategories" asp-page-handler="AddToOrder">
+                <input type="hidden" id="product-id" name="productId" value="">
+                <input type="hidden" id="product-quantity" name="quantity" value="1">
+                <input type="hidden" id="form-delivery-location" name="deliveryLocation" value="">
+                <button type="submit" id="add-to-cart">Add To Order</button>
+            </form>
+
+        </div>
     </div>
 </div>
 
 
+
 @section Scripts {
     <script>
-        const addToCartBtn = document.getElementById('addToCartBtn');
-        const form = document.getElementById('addToCartForm');
-        const quantityInput = document.getElementById('quantity');
-        const decreaseQty = document.getElementById('decreaseQty');
-        const increaseQty = document.getElementById('increaseQty');
-        const modal = document.getElementById('productModal'); // Define modal here
-        const closeModal = document.querySelector('.close'); // Get the close button
+        const modal = document.getElementById('product-modal');
+        const closeModalBtn = modal.querySelector('.close');
+        const quantityDisplay = document.getElementById('quantity');
+        const deliveryLocationInput = document.getElementById('delivery-location');
+        const addToCartForm = document.getElementById('add-to-cart-form');
+        const productIdInput = document.getElementById('product-id');
+        const productQuantityInput = document.getElementById('product-quantity');
+        const formDeliveryLocationInput = document.getElementById('form-delivery-location');
 
         let selectedProduct = null;
+        let quantity = 1;
 
-        const productGrid = document.getElementById('productGrid');
+        // Add event listeners to product grid
+        document.querySelectorAll('.product-item').forEach(productItem => {
+            productItem.addEventListener('click', function () {
+                selectedProduct = {
+                    id: productItem.dataset.id,
+                    name: productItem.dataset.name,
+                    price: productItem.dataset.price,
+                    description: productItem.dataset.description,
+                    imageUrl: productItem.dataset.image
+                };
 
-        productGrid.addEventListener('click', function (e) {
-            const productItem = e.target.closest('.product-item');
-            if (!productItem) return;
+                // Populate modal with product details
+                document.getElementById('modal-image').src = selectedProduct.imageUrl;
+                document.getElementById('modal-name').textContent = selectedProduct.name;
+                document.getElementById('modal-price').textContent = '$' + selectedProduct.price;
+                document.getElementById('modal-description').textContent = selectedProduct.description;
+                quantityDisplay.textContent = quantity = 1; // Reset quantity
+                productIdInput.value = selectedProduct.id; // Set hidden product ID field
 
-            selectedProduct = {
-                id: productItem.dataset.id,
-                name: productItem.dataset.name,
-                price: productItem.dataset.price,
-                description: productItem.dataset.description,
-                imageUrl: productItem.dataset.image
-            };
-
-            document.getElementById('modalImage').src = selectedProduct.imageUrl;
-            document.getElementById('modalName').textContent = selectedProduct.name;
-            document.getElementById('modalDescription').textContent = selectedProduct.description;
-            document.getElementById('modalPrice').textContent = selectedProduct.price;
-            quantityInput.value = 1;
-            document.getElementById('productId').value = selectedProduct.id;  // Set product ID
-
-            modal.style.display = 'block'; // Show the modal
+                modal.style.display = 'block'; // Show modal
+            });
         });
 
-        closeModal.addEventListener('click', () => {
-            modal.style.display = 'none'; // Hide the modal when close is clicked
+        // Close modal
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
         });
 
         window.addEventListener('click', (e) => {
-            if (e.target === modal) modal.style.display = 'none'; // Hide the modal if clicked outside
+            if (e.target === modal) modal.style.display = 'none';
         });
 
-        decreaseQty.addEventListener('click', () => {
-            const qty = parseInt(quantityInput.value);
-            if (qty > 1) quantityInput.value = qty - 1; // Decrease the quantity
+        // Update quantity
+        function decreaseQuantity() {
+            if (quantity > 1) {
+                quantity--;
+                updateQuantityDisplay();
+            }
+        }
+
+        function increaseQuantity() {
+            quantity++;
+            updateQuantityDisplay();
+        }
+
+        function updateQuantityDisplay() {
+            quantityDisplay.textContent = quantity;
+            productQuantityInput.value = quantity; // Update hidden form field
+        }
+
+        // Ensure delivery location is provided before form submission
+        addToCartForm.addEventListener('submit', function (event) {
+            const deliveryLocation = deliveryLocationInput.value.trim();
+            if (!deliveryLocation) {
+                event.preventDefault();
+                alert('Please provide a delivery location.');
+                return;
+            }
+            formDeliveryLocationInput.value = deliveryLocation; // Set hidden delivery location field
         });
-
-        increaseQty.addEventListener('click', () => {
-            quantityInput.value = parseInt(quantityInput.value) + 1; // Increase the quantity
-        });
-
-
     </script>
 }

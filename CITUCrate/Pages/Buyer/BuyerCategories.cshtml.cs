@@ -50,41 +50,58 @@ namespace CITUCrate.Pages.Buyer
         [BindProperty]
         public Order Order { get; set; }
 
-        public async Task<IActionResult> OnPostAddToCartAsync([FromForm] AddToCartRequest request)
+        public async Task<IActionResult> OnPostAddToOrderAsync(int productId, int quantity, string deliveryLocation)
         {
-            try
+            var userId = HttpContext.Session.GetInt32("UserId");
+
+            if (userId.HasValue)
             {
-                var userId = HttpContext.Session.GetInt32("UserId");
-                if (!userId.HasValue) return Unauthorized();
+                // Fetch pending orders for the user
+                var orders = await _ordersRepository.GetOrdersByStatusAsync("Pending");
+                var order = orders.FirstOrDefault(o => o.UserId == userId.Value);
 
-                var product = await _productService.GetProductByIdAsync(request.ProductId);
-                if (product == null) return NotFound();
+                if (order == null)
+                {
+                    // Create a new order if none exists
+                    order = new Order
+                    {
+                        UserId = userId.Value,
+                        Status = "Pending",
+                        OrderItems = new List<OrderItem>(),
+                        deliveryLocation = deliveryLocation // Set the delivery location
+                    };
+                    await _ordersRepository.CreateOrderAsync(order); // Use the repository method
+                }
+                else
+                {
+                    // Update the delivery location for an existing order
+                    order.deliveryLocation = deliveryLocation;
+                }
 
+                // Add the product as an order item
+                var product = await _productService.GetProductByIdAsync(productId); // Assuming this method exists
                 var orderItem = new OrderItem
                 {
-                    ProductId = product.ID,
-                    Quantity = request.Quantity,
-                    Subtotal = request.Quantity * product.Price
+                    ProductId = productId,
+                    Quantity = quantity,
+                    Subtotal = product.Price * quantity
                 };
 
-                var order = new Order
-                {
-                    UserId = userId.Value,
-                    Total = orderItem.Subtotal,
-                    OrderItems = new List<OrderItem> { orderItem }
-                };
+                order.OrderItems.Add(orderItem);
 
-                await _ordersRepository.CreateOrderAsync(order);
-                return RedirectToPage();  // Redirect back to the same page after adding to cart
+                // Save the changes to the repository
+                await _ordersRepository.UpdateOrderStatusAsync(order.Id, order.Status); // Update via existing method
+
+                return RedirectToPage("/Buyer/MyOrder");
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error adding to cart.");
-                return StatusCode(500);
-            }
+
+            return BadRequest();
         }
 
 
-
     }
+
+
+
 }
+

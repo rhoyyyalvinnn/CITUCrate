@@ -12,6 +12,7 @@
             <th>Order ID</th>
             <th>Total</th>
             <th>Status</th>
+            <th>Delivery Location</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -22,6 +23,7 @@
                 <td>@order.Id</td>
                 <td>@order.Total</td>
                 <td>@order.Status</td>
+                <td>@order.deliveryLocation</td>
                 <td>
                     <a href="/Buyer/PaymentPage/@order.Id" class="btn btn-primary">Buy Now</a>
                 </td>
