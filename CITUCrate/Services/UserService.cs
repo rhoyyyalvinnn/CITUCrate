@@ -57,7 +57,7 @@ public class UserService : IUserService
 
         if (user == null)
         {
-            return null; 
+            return null;
         }
 
         // Return the SellerDashboardDTO if user is found
@@ -82,5 +82,25 @@ public class UserService : IUserService
         }).ToList();
     }
 
+    public async Task<string> TopUpBalanceAsync(TopUpDTO topUpDTO, string username)
+    {
+        var user = await _userRepository.GetUserByUsernameAsync(username);
+
+        if (user == null)
+        {
+            return "User not found.";
+        }
+
+        user.Balance += topUpDTO.Amount;
+
+        bool result = await _userRepository.TopUpBalanceAsync(username, topUpDTO.Amount);
+
+        return result ? "Top-up successful." : "Top-up failed.";
+    }
+
+    public async Task<User> GetUserByUsernameAsync(string username)
+    {
+        return await _userRepository.GetUserByUsernameAsync(username);
+    }
 
 }

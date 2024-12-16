@@ -1,4 +1,5 @@
-﻿using CITUCrate.Models;
+﻿using CITUCrate.DTO;
+using CITUCrate.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CITUCrate.Repositories
@@ -30,6 +31,18 @@ namespace CITUCrate.Repositories
         public async Task<List<User>> GetAllUserAsync()
         {
             return await _context.Users.ToListAsync();
+        }
+
+        public async Task<bool> TopUpBalanceAsync(string username, decimal amount)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            if (user != null)
+            {
+                user.Balance += amount; // Increment balance
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }
