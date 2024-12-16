@@ -16,9 +16,6 @@ namespace CITUCrate.Pages.Buyer
         private readonly IOrdersRepository _ordersRepository;
 
         public BuyerCategoriesModel(IProductService productService, ILogger<BuyerCategoriesModel> logger, IOrdersRepository ordersRepository)
-
-        // Constructor
-        public BuyerCategoriesModel(IProductService productService, ILogger<BuyerCategoriesModel> logger)
         {
             _productService = productService;
             _logger = logger;
